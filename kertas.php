@@ -35,36 +35,6 @@
                     return false;
                 }
             }
-            /* Check if cookie exists
-            function getCookie(name) {
-                var dc = document.cookie;
-                var prefix = name + "=";
-                var begin = dc.indexOf("; " + prefix);
-                if (begin == -1) {
-                    begin = dc.indexOf(prefix);
-                    if (begin != 0) return null;
-                }
-                else
-                {
-                    begin += 2;
-                    var end = document.cookie.indexOf(";", begin);
-                    if (end == -1) {
-                    end = dc.length;
-                    }
-                }
-                // because unescape has been deprecated, replaced with decodeURI
-                //return unescape(dc.substring(begin + prefix.length, end));
-                return decodeURI(dc.substring(begin + prefix.length, end));
-            } 
-
-            function doSomething() {
-                var myCookie = getCookie("MyCookie");
-
-                if (myCookie != null) {
-                    // do cookie doesn't exist stuff;
-                }
-            }
-            */
         </script>
     </head>
     
@@ -88,7 +58,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card card-body">
-                        <h4 class="card-title">Atur Kertas yang Diekspor</h4>
+                        <h4 class="card-title">Atur Kertas Hasil Ekspor</h4>
                         <div class="row">
                             <div class="col-sm-12 col-xs-12">
                                 <!-- Content here -->

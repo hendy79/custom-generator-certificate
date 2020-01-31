@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="assets/node_modules/dropify/dist/css/dropify.min.css">
     <!-- Favicon icon -->
     <!--<link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">-->
-    <title>Import CSV</title>
+    <title>Generator Sertifikat</title>
     <!-- Custom CSS -->
     <link href="dist/css/style.min.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

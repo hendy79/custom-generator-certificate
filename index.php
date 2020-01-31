@@ -7,7 +7,7 @@
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <meta name="description" content="">
             <meta name="author" content="">
-            <title>Array Maker from CSV</title>
+            <title>Generator Sertifikat</title>
             <link href="dist/css/style.min.css" rel="stylesheet">
         </head>
         <body>
@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row" style="height: 43rem;">
+            <div class="row" style="height: 30rem;">
                 <div class="col-6">
                     <div class="card card-body bg-primary h-100 justify-content-center" onclick="window.location.href = 'kertas.php';">
                         <div class="row">

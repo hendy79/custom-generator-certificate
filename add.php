@@ -14,7 +14,7 @@ include 'action.php';
     <meta name="author" content="">
     <!-- Favicon icon -->
     <!--<link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon.png">-->
-    <title>Array Maker from CSV</title>
+    <title>Generator Sertifikat</title>
     <!-- Custom CSS -->
     <link href="dist/css/style.min.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -137,153 +137,42 @@ fclose($fp);
 
 <!-- Modal Buat CSV Baru-->
 
-<div class="modal fade" id="newModal" role="dialog" tabindex="-1" role="dialog" aria-labelledby="Menentukan Field" aria-hidden="true">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-            <h4 class="modal-title">Tambah Kolom</h4>
-            </div>
-            <div class="modal-body">
-                <form name="subb" method="post" enctype="multipart/form-data" action="">
-                    <div class="form-group">
-                        <div>
-                            <label>Kolom :</label>
+    <div class="modal fade" id="newModal" role="dialog" tabindex="-1" role="dialog" aria-labelledby="Menentukan Field" aria-hidden="true">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Tambah Kolom</h4>
+                </div>
+                <div class="modal-body">
+                    <form name="subb" method="post" enctype="multipart/form-data" action="">
+                        <div class="form-group">
+                            <div>
+                                <label>Kolom :</label>
+                            </div>
+                            <div class="mob-box mb-3">
+                                <input type="text" class="form-control form-ctr" id="head" name="head[]" placeholder="Masukan Nama Kolom">
+                            </div>
+                        </div>  
+                        <div class="form-group">
+                            <a href="javascript:void(0);" class="btn btn-success cust-btn add-field">Tambah</a>
+                            <button type="submit" onclick="simpan()" id="simpan" name="simpan" class="btn btn-primary ml-2" value="simpan">Simpan</button>
                         </div>
-                        <div class="mob-box mb-3">
-                            <input type="text" class="form-control form-ctr" id="head" name="head[]" placeholder="Enter column">
-                        </div>
-                    </div>  
-                    <div class="form-group">
-                        <a href="javascript:void(0);" class="btn btn-success cust-btn add-field">Tambah</a>
-                        <button type="submit" onclick="simpan()" id="simpan" name="simpan" class="btn btn-primary ml-2" value="simpan">Simpan</button>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-<script src="js/jquery-1.11.3.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script>
-
-var csvfile = "<?php echo $csv;?>";
-
-// Enable/disable row 
-$(document).on("click", "a[rel=editrow]", function(e) { 
-//    $("a[rel=editrow]").click(function(e) { 
-    e.preventDefault();
-    // get id clicked a and extract the linenumber
-    var linenum = this.id.split("-")[1];
-
-    // change button icon and row background color according to state
-    var rowIsEnabled;
-    if ($(this).children().attr("class") === "fa fa-unlock-alt") {
-        rowIsEnabled = true;
-        $(this).children().attr("class", "fa fa-lock");
-    }
-    else {
-        rowIsEnabled = false;
-        $(this).children().attr("class", "fa fa-unlock-alt");
-    }
-//Toggle Enable/Disable
-$("#row-"+ linenum).toggleClass("success");
-    // Toggle (disable/enable) every input field in row
-$("input[rel=input-"+ linenum + "]").each(function( i ) {
-    $(this).prop("disabled", rowIsEnabled);
-    });
-});    
-   
-// Delete row
-$(document).on("click", "a[rel=deleterow]", function(e) { 
-//    $("a[rel=deleterow]").click(function(e) { 
-    e.preventDefault();
-    // get id clicked a and extract the linenumber
-    var linenum = this.id.split("-")[1];
-    // change background color of row to indicate that row is unlocked/locked
-    $("#row-"+ linenum).hide();
-});
-
-// Add row
-$("#addrow").click(function(e) { 
-    e.preventDefault();
-    // get linenumber of last row
-    var linenum = parseInt($("#csvtable tbody tr:last").attr("id").split("-")[1]);
-    $("#csvtable tbody").append(makeTableRow(linenum+1, <?php echo $columns;?>, true));
-});
- 
-// Save
-$("#csave").click(function(e) { 
-    e.preventDefault();
-    var csvlines = {};
-    var columncnt = 0;
-    var linecnt = 0;
-    // Loop through all (visible only) table rows and make data
-    $("[rel=row]:visible").each(function() {
-        var linenum = this.id.split("-")[1];
-        var thisline = {};
-        columncnt = 0;
-            $("input[rel=input-"+ linenum + "]").each(function() {
-                thisline['col-'+columncnt] = $(this).val(); 
-                columncnt++;
-            });
-        csvlines['line-'+linecnt] = thisline;
-        linecnt++;
-        });
-        var csvdata = {csvfile: csvfile, lines: linecnt, columns: columncnt, data: csvlines};
-        // Write data to file and show result to user
-        $.ajax({
-            url: "savetocsv.php",
-            method: "POST",
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            async: false,
-            data: JSON.stringify(csvdata),
-            cache: false,
-        });
-        location.replace("add.php");
-    });
-
-//Add header field
-$(document).on("click", ".add-field", function () {
-    var field = '<div class="mob-box">' +
-        '<input type="text" class="form-control form-ctr" id="head" name="head[]" placeholder="Enter column">' +
-        '<a href="javascript:void(0);" class="remove-field cust-btn">Remove</a>' +
-        '<div class="clearfix"></div>' +
-        '</div>';
-    $(field).insertAfter('.mob-box:last');
-});
-//remove header field
-$(document).on("click", ".remove-field", function () {
-    $(this).parent('.mob-box').remove();
-});
-    
-//untuk menambah row data csv
-function makeTableRow(linenum, columns, isenabled) {
-    var h = "<tr rel=\"row\" id=\"row-" + linenum + "\" class=\"" + (isenabled===true ? "success" : "") + "\">";
-    for (var columncnt=0; columncnt<columns; columncnt++) {
-        h += "<td><input class=\"form-control" + (columncnt==0 ? " input-col-first" : " input-col-rest") + "\" rel=\"input-" + linenum + "\"" + (isenabled===true ? "" : " disabled") + " type=\"text\" value=\"\"></td>";
-    }
-    h += "<td>";
-    h += " <a href=\"#\" rel=\"editrow\" id=\"editrow-" + linenum + "\" title=\"Edit row\" class=\"btn btn-default btn-sm\"><i class=\"fa " + (isenabled===true ? "fa-unlock-alt" : "fa-lock") + "\"></i></a>";
-    h += " <a href=\"#\" rel=\"deleterow\" id=\"deleterow-" + linenum + "\" title=\"Delete row\" class=\"btn btn-default btn-sm\"><i class=\"fa fa-trash\"></i></a>";
-    h += "</td>";
-    h += "</tr>";
-    return h;
-}
-
-</script>
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->
-    <script src="../assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
+    <script src="assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
     <!-- Bootstrap tether Core JavaScript -->
-    <script src="../assets/node_modules/popper/popper.min.js"></script>
-    <script src="../assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="assets/node_modules/popper/popper.min.js"></script>
+    <script src="assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- slimscrollbar scrollbar JavaScript -->
     <script src="dist/js/perfect-scrollbar.jquery.min.js"></script>
     <!--Wave Effects -->
@@ -291,12 +180,117 @@ function makeTableRow(linenum, columns, isenabled) {
     <!--Menu sidebar -->
     <script src="dist/js/sidebarmenu.js"></script>
     <!--stickey kit -->
-    <script src="../assets/node_modules/sticky-kit-master/dist/sticky-kit.min.js"></script>
-    <script src="../assets/node_modules/sparkline/jquery.sparkline.min.js"></script>
+    <script src="assets/node_modules/sticky-kit-master/dist/sticky-kit.min.js"></script>
+    <script src="assets/node_modules/sparkline/jquery.sparkline.min.js"></script>
     <!--Custom JavaScript -->
     <script src="dist/js/custom.min.js"></script>
-</body>
-</body>
+    <script>
+        var csvfile = "<?php echo $csv;?>";
+
+        // Enable/disable row 
+        $(document).on("click", "a[rel=editrow]", function(e) { 
+        //    $("a[rel=editrow]").click(function(e) { 
+            e.preventDefault();
+            // get id clicked a and extract the linenumber
+            var linenum = this.id.split("-")[1];
+
+            // change button icon and row background color according to state
+            var rowIsEnabled;
+            if ($(this).children().attr("class") === "fa fa-unlock-alt") {
+                rowIsEnabled = true;
+                $(this).children().attr("class", "fa fa-lock");
+            }
+            else {
+                rowIsEnabled = false;
+                $(this).children().attr("class", "fa fa-unlock-alt");
+            }
+        //Toggle Enable/Disable
+        $("#row-"+ linenum).toggleClass("success");
+            // Toggle (disable/enable) every input field in row
+        $("input[rel=input-"+ linenum + "]").each(function( i ) {
+            $(this).prop("disabled", rowIsEnabled);
+            });
+        });    
+        
+        // Delete row
+        $(document).on("click", "a[rel=deleterow]", function(e) { 
+        //    $("a[rel=deleterow]").click(function(e) { 
+            e.preventDefault();
+            // get id clicked a and extract the linenumber
+            var linenum = this.id.split("-")[1];
+            // change background color of row to indicate that row is unlocked/locked
+            $("#row-"+ linenum).hide();
+        });
+
+        // Add row
+        $("#addrow").click(function(e) { 
+            e.preventDefault();
+            // get linenumber of last row
+            var linenum = parseInt($("#csvtable tbody tr:last").attr("id").split("-")[1]);
+            $("#csvtable tbody").append(makeTableRow(linenum+1, <?php echo $columns;?>, true));
+        });
+        
+        // Save
+        $("#csave").click(function(e) { 
+            e.preventDefault();
+            var csvlines = {};
+            var columncnt = 0;
+            var linecnt = 0;
+            // Loop through all (visible only) table rows and make data
+            $("[rel=row]:visible").each(function() {
+                var linenum = this.id.split("-")[1];
+                var thisline = {};
+                columncnt = 0;
+                    $("input[rel=input-"+ linenum + "]").each(function() {
+                        thisline['col-'+columncnt] = $(this).val(); 
+                        columncnt++;
+                    });
+                csvlines['line-'+linecnt] = thisline;
+                linecnt++;
+                });
+                var csvdata = {csvfile: csvfile, lines: linecnt, columns: columncnt, data: csvlines};
+                // Write data to file and show result to user
+                $.ajax({
+                    url: "savetocsv.php",
+                    method: "POST",
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    async: false,
+                    data: JSON.stringify(csvdata),
+                    cache: false,
+                });
+                location.replace("add.php");
+            });
+
+        //Add header field
+        $(document).on("click", ".add-field", function () {
+            var field = '<div class="mob-box">' +
+                '<input type="text" class="form-control form-ctr" id="head" name="head[]" placeholder="Masukan Nama Kolom">' +
+                '<a href="javascript:void(0);" class="remove-field cust-btn">Hapus</a>' +
+                '<div class="clearfix"></div>' +
+                '</div>';
+            $(field).insertAfter('.mob-box:last');
+        });
+        //remove header field
+        $(document).on("click", ".remove-field", function () {
+            $(this).parent('.mob-box').remove();
+        });
+            
+        //untuk menambah row data csv
+        function makeTableRow(linenum, columns, isenabled) {
+            var h = "<tr rel=\"row\" id=\"row-" + linenum + "\" class=\"" + (isenabled===true ? "success" : "") + "\">";
+            for (var columncnt=0; columncnt<columns; columncnt++) {
+                h += "<td><input class=\"form-control" + (columncnt==0 ? " input-col-first" : " input-col-rest") + "\" rel=\"input-" + linenum + "\"" + (isenabled===true ? "" : " disabled") + " type=\"text\" value=\"\"></td>";
+            }
+            h += "<td>";
+            h += " <a href=\"#\" rel=\"editrow\" id=\"editrow-" + linenum + "\" title=\"Edit row\" class=\"btn btn-default btn-sm\"><i class=\"fa " + (isenabled===true ? "fa-unlock-alt" : "fa-lock") + "\"></i></a>";
+            h += " <a href=\"#\" rel=\"deleterow\" id=\"deleterow-" + linenum + "\" title=\"Delete row\" class=\"btn btn-default btn-sm\"><i class=\"fa fa-trash\"></i></a>";
+            h += "</td>";
+            h += "</tr>";
+            return h;
+        }
+    </script>
+    </body>
 </html>
 
 

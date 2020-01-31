@@ -43,7 +43,7 @@
         <div class="login-register" style="background-image:url(../assets/images/background/login-register.jpg);">
             <div class="login-box card">
                 <div class="card-body">
-                    <form class="form-horizontal form-material" id="loginform" action="index.html">
+                    <form class="form-horizontal form-material" id="loginform" action="index.php">
                         <h3 class="box-title m-b-20">Recover Password</h3>
                         <div class="form-group ">
                             <div class="col-xs-12">
