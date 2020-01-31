@@ -14,7 +14,7 @@ class CsvReader
 	{
 		$tmp = explode('.', $csv['name']);
 		$extension = end($tmp);
-		if($extension !== 'csv')
+		if($extension !== 'csv' && $csv['name']!=null)
 		{
 		   	exit('No CSV file.');
 		}
@@ -93,6 +93,26 @@ class CsvReader
 		$results = array();
 
 		if (($handle = fopen($this->csv['tmp_name'], "r")) !== FALSE)
+		{
+		    while (($data = fgetcsv($handle, $this->length, $this->delimiter, $this->enclosure, $this->escape)) !== FALSE)
+		    {
+		        $results[] = $data;
+
+		        $this->c_rows++;
+		    }
+
+		    fclose($handle);
+		}
+
+		return $results;
+	}
+
+	public function dataread($temp_v)
+	{
+		$this->c_rows = 1;
+		$results = array();
+
+		if (($handle = fopen($temp_v, "r")) !== FALSE)
 		{
 		    while (($data = fgetcsv($handle, $this->length, $this->delimiter, $this->enclosure, $this->escape)) !== FALSE)
 		    {

@@ -23,7 +23,22 @@
 </head>
  
 <body>
-<div class="container-fluid mt-4">
+<div class="container-fluid">
+    <div class="row page-titles">
+        <div class="col-md-12 align-self-center">
+            <div class="row">
+                <h4 class="text-white">Generator Sertifikat</h4>
+            </div>
+            <div class="row">
+                <div class="d-flex justify-content-end align-items-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                        <li class="breadcrumb-item active">Impor CSV</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-12">
             <div class="card card-body">

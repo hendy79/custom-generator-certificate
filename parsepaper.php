@@ -6,8 +6,26 @@
         set_cookie('spsize', $_POST["igpsize"]);
         set_cookie('sformat', $_POST["igformat"]);
         set_margin($_POST["matas"], $_POST["mbawah"], $_POST["mkanan"], $_POST["mkiri"]);
+        if (isset($_COOKIE['values'])) {
+            unset($_COOKIE['values']); 
+            setcookie('values', null, -1, '/'); 
+        }
         //echo untuk mencoba melihat cookie
-        header('Location:removearray.php');
+        header('Location:importcsv.php');
+    }
+    if(isset($_POST["Submit1"])){
+        if (isset($_COOKIE['spsize'])) {
+            del_cookie();
+        }
+        set_cookie('spsize', $_POST["igpsize"]);
+        set_cookie('sformat', $_POST["igformat"]);
+        set_margin($_POST["matas"], $_POST["mbawah"], $_POST["mkanan"], $_POST["mkiri"]);
+        if (isset($_COOKIE['values'])) {
+            unset($_COOKIE['values']); 
+            setcookie('values', null, -1, '/'); 
+        }
+        //echo untuk mencoba melihat cookie
+        header('Location:add.php');
     }
     function set_cookie($cookiename, $v){
         setcookie($cookiename, json_encode($v), time() + (86400));
