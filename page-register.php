@@ -43,7 +43,7 @@
         <div class="login-register" style="background-image:url(../assets/images/background/login-register.jpg);">
             <div class="login-box card">
                 <div class="card-body">
-                    <form class="form-horizontal form-material" id="loginform" action="index.html">
+                    <form class="form-horizontal form-material" id="loginform" action="index.php">
                         <h3 class="text-center m-b-20">Sign Up</h3>
                         <div class="form-group">
                             <div class="col-xs-12">
@@ -99,7 +99,7 @@
                         </div>
                         <div class="form-group m-b-0">
                             <div class="col-sm-12 text-center">
-                                Sudah punya Akun? <a href="page-login.html" class="text-info m-l-5"><b>Sign In</b></a>
+                                Sudah punya Akun? <a href="page-login.php" class="text-info m-l-5"><b>Sign In</b></a>
                             </div>
                         </div>
                     </form>
