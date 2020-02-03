@@ -150,7 +150,10 @@ session_start();
 
     // masukin text onload
     for(i=0;i<values[0].length;i++){
-        text[i] = new fabric.IText(values[0][i],{id: i});
+        text[i] = new fabric.IText(values[0][i],{id: i,
+            originX: 'center', //added
+            originY: 'center', //added
+            centeredScaling: true,});
         textId = i;
         canvas.add(text[i]);
     }
