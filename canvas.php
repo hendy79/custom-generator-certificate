@@ -5,245 +5,205 @@ session_start();
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- tittle -->
-    <title>Generator Sertifikat</title>
-    <!-- jquery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="canvas.js"></script>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="node_modules/fabric/dist/fabric.min.js"></script>
 </head>
 <body>
-    <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <span class="navbar-brand mb-0 h1 col-md-7">Nama_Sertifikat</span>
+<!-- canvas -->
+    <canvas id="bg" width="859" height="842" style="border:1px solid black;"></canvas>
+<!-- end canvas -->
 
-        <!-- JENIS FONT BUTTON -->
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Font tulisan
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item" id="arial">Arial</a>
-            <a class="dropdown-item" id="sans">Sans</a>
-        </div>
-        </div>
+<!-- tombol ganti kertas -->
+<button type="button" id="btna4">A4</button>
+<button type="button" id="btna5">A5</button>
+<button type="button" id="btnltr">Letter</button>
+<!-- end tombol ganti kertas -->
 
-        <!-- ukuran kertas -->
-        <div class="collapse navbar-collapse col-6 col-md-4" id="navbarSupportedContent">
-            <form class="form-inline my-2 my-lg-0">
-            <span class="navbar-brand mb-0 h3">Ukuran Kertas</span>
-            <button class="btn btn-outline-primary my-2 my-sm-0" type="button" id="btna4">A4</button>
-            <button class="btn btn-outline-primary my-2 my-sm-0" type="button" id="btna5">A5</button>
-            <button class="btn btn-outline-primary my-2 my-sm-0" type="button" id="btnltr">Letter</button>
-            </form>
-        </div>
-    </nav>
+<!-- tambah gambar -->
+<input type="file" onchange="previewFile()">
+<img src="" height="200" alt="Image preview...">
+<!-- end tambah gambar -->
 
-<!-- Canvas -->
-<!-- edit tools pake jquery -->
-<div class="container mt-3">
-<canvas id="myCanvas" width="842" height="595" style="border:1px solid black;"></canvas>
-</div>
+<!-- fit to background -->
+<button id="ftbg" onclick="fitSelectedObject()" >Fit to Background</button>
+<!-- end fit to background -->
 
 
-<!-- TOOLS -->
-<!-- TODO: -->
-<!-- geser atas, bwh,kiri,kanan, ganti font, ukuran font -->
-<!-- add gambar, geser gambar, resize gambar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
+<!-- delete all -->
+<button id="delall">Delete All</button>
+<!-- end delete all -->
 
-        <!-- ukuran font -->
-        <input type="text" class="ml-4" placeholder="ukuran font..">
-        <input type="submit" class="mr-5" >
+<!-- delete selected layer -->
+<button id="delsel">Delete</button>
+<!-- end delete selected layer -->
 
-        <!-- geser-->
-        <!-- kiri -->
-        <button id="geser1" class="btn btn-primary">kiri</button>
-        <!-- atas -->
-        <button id="geser2" class="btn btn-primary">atas</button>
-        <!-- bawah -->
-        <button id="geser3" class="btn btn-primary">bawah</button>
-        <!-- kanan -->
-        <button id="geser4" class="btn btn-primary">kanan</button>
+<!-- add text -->
+<button id="addtxt">Add Text</button>
+<!-- end add text -->
 
+<!-- send to back -->
+<button onclick="sendSelectedObjectBack()">Send To back</button>
+<!-- end send to back -->
+
+<!-- generate canvas -->
+<button id="generate">Generate!</button>
 
 
-        <div class="collapse navbar-collapse col-6 col-md-4 ml-5" id="navbarSupportedContent">
-            <form class="form-inline my-2 my-lg-0">
-                <!-- upload gambar -->
-            <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
-            </div>
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-            </div>
-            </div>
-            
-            </form>
-        </div>
-    </nav>
+    <script>
+    var values = <?php echo $_COOKIE['values'];?>;
+    var canvas = new fabric.Canvas('bg');
+
+    // jquery ganti kertas
+    $("#btna4").click(function(){
+        canvas.setWidth(859);
+        canvas.setHeight(842);
+        canvas.calcOffset();
+        canvas.renderAll();
+    });
+
+    $("#btna5").click(function(){
+        canvas.setWidth(595);
+        canvas.setHeight(420);
+        canvas.calcOffset();
+        canvas.renderAll();
+    });
 
 
-        <script type="text/javascript">
-            var canvas = document.getElementById("myCanvas");
-            var ctx = canvas.getContext("2d");
-            ctx.textAlign = 'center';
-            var values = <?php echo $_COOKIE['values'];?>;
-            // an array to store every word
-            var recentWord = [];
-            
-            var koorx = canvas.width/2;
-            var koory = canvas.height/2;
+    $("#btnltr").click(function(){
+        canvas.setWidth(792);
+        canvas.setHeight(612);
+        canvas.calcOffset();
+        canvas.renderAll();
+    });
 
-            function fontarial(){
-                var jnshrf = "arial";
-                ctx.font = "30px "+jnshrf;
-            };
 
-            function fontsans(){
-                var jnshrf = "sans";
-                ctx.font = "30px "+jnshrf;
-            };
 
-            function draw(){
-                for(i=0;i<values[0].length;i++){
-                    ctx.fillText(values[0][i],koorx,koory);
-                }
-            };
-            ctx.font = "30px Arial"
-            draw();
+    // upload gambar
+    function previewFile() {
+    var preview = document.querySelector('img');
+    var file    = document.querySelector('input[type=file]').files[0];
+    var reader  = new FileReader();
 
-            // jquery ganti font sans
-            $(document).ready(function(){
-                $("#sans").click(function(){
-                    // cls
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                // addagain
-                fontsans();
-                draw();
+    reader.onloadend = function () {
+        preview.src = reader.result;
+        fabric.Image.fromURL(preview.src, function(oImg) { 
+            oImg.scaleToWidth(50);
+            oImg.scaleToHeight(50);
+            canvas.centerObject(oImg);
+            canvas.add(oImg);
+        });
+    };
+
+    if (file) {
+        reader.readAsDataURL(file);
+    } else {
+        preview.src = "";
+    }
+    };
+
+
+    // upload background
+    var object;
+    canvas.on('object:selected', function(event) {
+    object = event.target;
+    });
+
+    var fitSelectedObject = function() {
+        canvas.set({
+                    scaleX: 300 / canvas.width,
                 });
-            });
-            // end
-            
-            // jquery ganti font arial
-            $(document).ready(function(){
-                $("#arial").click(function(){
-                    // cls
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                // addagain
-                fontarial();
-                draw();
-                });
-            });
-            // end
+    };
 
-            ctx.font = "64px Arial";
-            for(i=0;i<values[0].length;i++){
-                ctx.strokeText(values[0][i],100,120);
+
+            
+            
+
+
+    // delete all
+    $(document).ready(function(){
+    $("#delall").click(function(){
+        canvas.clear();
+    });
+    });
+
+    // delete selected layer
+    $(document).ready(function(){
+    $("#delsel").click(function(){
+        canvas.remove(canvas.getActiveObject());
+    });
+    });
+
+    // input text manual
+    $(document).ready(function(){
+    $("#addtxt").click(function(){
+        var txtmnl = new fabric.IText("your text here ...");
+        canvas.centerObject(txtmnl);
+        canvas.add(txtmnl);
+    });
+    });
+
+    var text    = new Array();
+
+    // masukin text onload
+    for(i=0;i<values[0].length;i++){
+        text[i] = new fabric.IText(values[0][i],{id: i});
+        textId = i;
+        canvas.add(text[i]);
+    }
+
+    // generate values
+    /*canvas.getObjects().forEach(function(o) {
+        for(j=0;j<i;j++){
+            if(j == o.id){
+                o.set('text',values[1][j]);
             }
-            recentWord.push(canvas.toDataURL('image/jpeg', 1.0));
+        }
+    });*/
+    
+    // send to back
+    var objectToSendBack;
+    canvas.on('object:selected', function(event) {
+    objectToSendBack = event.target;
+    });
+
+    var sendSelectedObjectBack = function() {
+    canvas.sendToBack(objectToSendBack);
+    }
+
+    var rect = new fabric.Rect({
+        left : 100,
+        top : 150,
+        fill : 'red',
+        width : 200,
+        height :20
+    });
+    
+    canvas.add(rect);
 
 
-            
-            
-
-
-
-
-            // variable koordinat mouse
-            var mouseX = 0;
-            var mouseY = 0;
-            var startingX = 0;
-
-            
-
-            //function to save canvas state after key press
-            function saveState(){
-                undoList.push(canvas.toDataURL());
-            }
-
-            // function to called when backspace press
-            var undoList = [];
-            // function undo(){
-            //     undoList.pop();
-
-            //     var imgData = undoList[undoList.leght];
-            //     var image = new image();
-
-            //     // display old saved state
-            //     image.src = imgData;
-            //     image.onload = function(){
-            //         context.clearRect(0,0, canvas.width, canvas.height);
-            //         context.drawImage(image, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
-            //     }
-            // }
-
-            //by default, save the canvas state first
-            saveState();
-
-
-            //function pemanggil ketika mouse di click
-            // function add(){
-            // canvas.addEventListener("click", function(e){
-            //     // get position on click
-            //     mouseX = e.pageX - canvas.offsetLeft;
-            //     mouseY = e.pageY - canvas.offsetTop;
-            //     startingX = mouseX;
-            //     var text = "User"
-            //     var igm = ctx.fillText(text, mouseX, mouseY);
-            //     recentWord.push(canvas.toDataURL('image/jpeg', 1.0));
-                
-            //     console.log(recentWord);
-            //     return false;
-            // },false);
-            // }
-
-
-            $(document).ready(function(){
-                $("#tambah").click(function(){
-                    canvas.addEventListener("click", function(e){
-                        // get position on click
-                        mouseX = e.pageX - canvas.offsetLeft;
-                        mouseY = e.pageY - canvas.offsetTop;
-                        startingX = mouseX;
-                        var text = "User"
-                        var igm = ctx.fillText(text, mouseX, mouseY);
-                       
-                        
-                        return false;
-                    },{once:true});
+    // generate sertifikat
+    $(document).ready(function(){
+        $("#generate").click(function(){
+            for(i=1;i<values.length;i++){
+                canvas.getObjects().forEach(function(o) {
+                    for(j=0;j<values[0].length;j++){
+                        if(j == o.id){
+                            o.set('text',values[i][j]);
+                        }
+                    }
                 });
-            });
+                canvas.renderAll();
+            }
+        });
+    });
 
+    canvas.renderAll();
 
-            
+    </script>
 
-            // add keydown event to canvas
-            // canvas.addEventListener("keydown",function(e){
-            //     //set canvas font
-            //     ctx.font = "6px Arial";
-            //     var text = ""
-            //     //write to canvas
-            //     // ctx.fillText(text, mouseX, mouseY);
-
-            //     // move cursor forward
-            //     mouse += ctx.measureText(text).width;
-            // },false);
-
-
-
-
-        </script>
-
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </body>
 </html>
