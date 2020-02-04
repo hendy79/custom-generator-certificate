@@ -14,14 +14,31 @@ session_start();
 </head>
 <body>
 <!-- canvas -->
-    <canvas id="bg" width="859" height="842" style="border:1px solid black;"></canvas>
+<?php
+    $psize = $_COOKIE['spsize'];
+    $width  = 842;
+    $height = 595;
+    if($psize == '"1"'){
+        $width  = 1191;
+        $height = 842;
+    }elseif($psize == '"2"'){
+        //default
+    }elseif($psize == '"3"'){
+        $width  = 595;
+        $height = 420;
+    }elseif($psize == '"4"'){
+        $width  = 1001;
+        $height = 709;
+    }elseif($psize == '"5"'){
+        $width  = 709;
+        $height = 599;
+    }elseif($psize == '"6"'){
+        $width  = 792;
+        $height = 612;
+    }
+    echo '<canvas id="bg" width="'.$width.'" height="'.$height.'" style="border:1px solid black;"></canvas>';
+?>
 <!-- end canvas -->
-
-<!-- tombol ganti kertas -->
-<button type="button" id="btna4">A4</button>
-<button type="button" id="btna5">A5</button>
-<button type="button" id="btnltr">Letter</button>
-<!-- end tombol ganti kertas -->
 
 <!-- tambah gambar -->
 <input type="file" onchange="previewFile()">
@@ -56,31 +73,6 @@ session_start();
     <script>
     var values = <?php echo $_COOKIE['values'];?>;
     var canvas = new fabric.Canvas('bg');
-
-    // jquery ganti kertas
-    $("#btna4").click(function(){
-        canvas.setWidth(859);
-        canvas.setHeight(842);
-        canvas.calcOffset();
-        canvas.renderAll();
-    });
-
-    $("#btna5").click(function(){
-        canvas.setWidth(595);
-        canvas.setHeight(420);
-        canvas.calcOffset();
-        canvas.renderAll();
-    });
-
-
-    $("#btnltr").click(function(){
-        canvas.setWidth(792);
-        canvas.setHeight(612);
-        canvas.calcOffset();
-        canvas.renderAll();
-    });
-
-
 
     // upload gambar
     function previewFile() {

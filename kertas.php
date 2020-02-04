@@ -22,16 +22,8 @@
             function validateForm() {
             var x = document.forms["formpaper"]["igpsize"].value;
             var y = document.forms["formpaper"]["igformat"].value;
-            var za = document.forms["formpaper"]["matas"].value;
-            var zb = document.forms["formpaper"]["mbawah"].value;
-            var zc = document.forms["formpaper"]["mkanan"].value;
-            var zd = document.forms["formpaper"]["mkiri"].value;
                 if (x == "" || y == "") {
                     alert("Masukan Berlogo * dibutuhkan!");
-                    return false;
-                }
-                if(isNaN(za) || isNaN(zb) || isNaN(zc) || isNaN(zd)){
-                    alert("Masukan Bukan Angka! (Angka Koma Menggunakan .)");
                     return false;
                 }
             }
@@ -72,26 +64,16 @@
                                             <option value="3">A5</option>
                                             <option value="4">B4</option>
                                             <option value="5">B5</option>
+                                            <option value="6">Letter</option>
                                         </select>
-                                        <div class="invalid-feedback">
-                                            Masukan Pilihan Ukuran Kertas
-                                        </div>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label class="form-group-text" for="igformat">Format Ekspor*</label>
                                         <select class="form-control custom-select" id="igformat" name="igformat">
                                             <option value="" disabled selected>Pilih Disini</option>
                                             <option value="1">pdf</option>
-                                            <option value="2">jpg</option>
-                                            <option value="3">png</option>
+                                            <option value="2">png</option>
                                         </select>
-                                    </div>
-                                    <label class="form-group-text">Ukuran Margin (Default = No Margin)</label>
-                                    <div class="form-group mb-3 row">
-                                        <input class="form-control col ml-3" id="matas" placeholder="Margin Atas (cm)" name="matas">
-                                        <input class="form-control col ml-3" id="mbawah" placeholder="Margin Bawah (cm)" name="mbawah">
-                                        <input class="form-control col ml-3" id="mkanan" placeholder="Margin Kanan (cm)" name="mkanan">
-                                        <input class="form-control col ml-3 mr-3" id="mkiri" placeholder="Margin Kiri (cm)" name="mkiri">
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-12 col-xs-12">
