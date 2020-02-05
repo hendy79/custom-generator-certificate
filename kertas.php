@@ -73,6 +73,7 @@
                                             <option value="" disabled selected>Pilih Disini</option>
                                             <option value="1">pdf</option>
                                             <option value="2">png</option>
+                                            <option value="3">jpeg</option>
                                         </select>
                                     </div>
                                     <div class="row">

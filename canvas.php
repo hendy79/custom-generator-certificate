@@ -11,6 +11,9 @@ session_start();
     <title>Document</title>
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/fabric/dist/fabric.min.js"></script>
+    <script src="node_modules/jszip/dist/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
 </head>
 <body>
 <!-- canvas -->
@@ -179,10 +182,13 @@ session_start();
     
     canvas.add(rect);
 
+    var cvs = document.getElementById("bg");
+    var ctx = canvas.getContext("2d");
 
     // generate sertifikat
     $(document).ready(function(){
         $("#generate").click(function(){
+            var zip = new JSZip();
             for(i=1;i<values.length;i++){
                 canvas.getObjects().forEach(function(o) {
                     for(j=0;j<values[0].length;j++){
@@ -192,7 +198,41 @@ session_start();
                     }
                 });
                 canvas.renderAll();
+                <?php 
+                $pformat = $_COOKIE['sformat'];
+                if($pformat == '"1"'){
+                    echo 'var imgData = cvs.toDataURL("image/png", 1.0);';
+                        if($psize == '"1"'){
+                            echo 'var pdf = new jsPDF("l","pt","a3");';
+                        }elseif($psize == '"2"'){
+                            echo 'var pdf = new jsPDF("l","pt","a4");';
+                        }elseif($psize == '"3"'){
+                            echo 'var pdf = new jsPDF("l","pt","a5");';
+                        }elseif($psize == '"4"'){
+                            echo 'var pdf = new jsPDF("l","pt","b4");';
+                        }elseif($psize == '"5"'){
+                            echo 'var pdf = new jsPDF("l","pt","b5");';
+                        }elseif($psize == '"6"'){
+                            echo 'var pdf = new jsPDF("l","pt","letter");';
+                        }
+                    echo 'var width = pdf.internal.pageSize.getWidth();
+                        var height = pdf.internal.pageSize.getHeight();
+                        pdf.addImage(imgData,"PNG", 0, 0, width, height);
+                        zip.file(\'Sertifikat\'+i+\'.pdf\', pdf.output(\'blob\'));';
+                }elseif($pformat == '"2"'){
+                    echo 'var imgData = cvs.toDataURL("image/png", 1.0);
+                    zip.file(\'Sertifikat\'+i+\'.png\', imgData.split(\'base64,\')[1],{base64: true});';
+                }elseif($pformat == '"3"'){
+                    echo 'var imgData = cvs.toDataURL("image/jpg", 1.0);
+                    zip.file(\'Sertifikat\'+i+\'.jpeg\', imgData.split(\'base64,\')[1],{base64: true});';
+                }
+                ?>
             }
+            zip.generateAsync({type:"blob"}).then(function (blob) {
+                saveAs(blob, "SertifikatBundle.zip");
+            }, function (err) {
+                jQuery("#blob").text(err);
+            });
         });
     });
 
