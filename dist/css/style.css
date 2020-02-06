@@ -4249,10 +4249,10 @@ input[type="button"].btn-block {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: #fff;
+  color: #000;
   text-align: center;
   white-space: nowrap;
-  background-color: #fb9678;
+  background-color: #7397e4;
   transition: width 0.6s ease; }
   @media (prefers-reduced-motion: reduce) {
     .progress-bar {
@@ -4582,6 +4582,15 @@ a.close.disabled {
   .modal-open .modal {
     overflow-x: hidden;
     overflow-y: auto; }
+
+.center-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 85vh;
+}
 
 .modal {
   position: fixed;
