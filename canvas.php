@@ -233,6 +233,7 @@ session_start();
             originY: 'center', //added
             centeredScaling: true});
         textId = i;
+        canvas.centerObject(text[i]);
         canvas.add(text[i]);
     }
     // send to back
