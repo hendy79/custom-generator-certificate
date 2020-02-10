@@ -415,7 +415,7 @@ session_start();
         for (var i = 1; i < values.length; i++) {
             images[i] = new Image();
             images[i].src = qrimg[i];
-            img.onload = canvas.renderAll();
+            images[i].onload = canvas.renderAll();
         }
     }
 
@@ -504,6 +504,35 @@ session_start();
             elem.style.width = 100 * i/(values.length) + "%";
             elem.innerHTML = 100 * i/(values.length)  + "%";*/
         }
+        postGenerate();
+    }
+
+    //Mengembalikan isi canvas ke posisi sebelum generate
+    function postGenerate(){
+        var objects = canvas.getObjects();
+        objects.forEach(function(o) {
+            for(xy=0;xy<values[0].length;xy++){
+                if(xy === o.id){
+                    o.set({text: values[0][xy]});
+                }
+            }
+            if(o.id === 'imgQr'){
+                canvas.remove(o);
+                fabric.Image.fromURL(img.src, function(oImg) { 
+                    oImg.set({id: 'imgQr',
+                        originX: 'center', 
+                        originY: 'center',
+                        id: objectElement[0],
+                        scaleX: objectElement[1] / 203,
+                        scaleY: objectElement[2] / 203,
+                        left: objectElement[3],
+                        top: objectElement[4]
+                    });
+                    canvas.add(oImg);
+                });
+            }
+        });
+        canvas.renderAll();
     }
 
     // generate sertifikat
@@ -528,8 +557,8 @@ session_start();
                 });
 
                 $('#myModal').modal('hide');
-                return;
             });
+
             return;
         });
         return;
