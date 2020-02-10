@@ -36,7 +36,7 @@ include "connection.php";
 </div>
 <div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-9">
+        <div class="col-12">
             <div class="card card-body">
                 <table id="serti" class="table table-responsive table-hover table-bordered text-center"> 
                     <?php   
@@ -71,7 +71,22 @@ include "connection.php";
                             </tr>
                         <?php endforeach;?>     
                     </tbody>
-                    
+                    <tfoot>
+                        <tr>
+                            <?php 
+                                $idsearch=null;
+                                if(!empty($_GET['id'])){
+                                    $idsearch=$_GET['id']; 
+                                }
+                            ?>
+                            <th><input type="text" name="idsearch" id="idsearch" value="<?php echo $idsearch; ?>"/></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>    
         </div>
@@ -81,13 +96,43 @@ include "connection.php";
 
 <script>
         
-$(document).ready(function() {    
+$(document).ready(function() {  
+    // DataTable
     var table = $('#serti').DataTable({
         responsive: true,
-        keepConditions: true
-    }); 
+    });
+ 
+    // Apply the search
+    table.columns().every( function () {
+        var that = this;
+        $( 'input', this.footer() ).on( 'keyup change clear load', function () {
+            if ( that.search() !== this.value ) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        });
+    });
+
+    table.columns().every( function () {
+        var e = jQuery.Event("keydown", {
+        keyCode: 13
+        });
+        var that = this;
+        $( 'input', this.footer() ).on( 'keydown', function () {
+            if (e.keyCode === 13) {
+                that
+                    .search( this.value )
+                    .draw();
+            }
+        });
+        $( 'input', this.footer() ).trigger(e);
+    });
+
 });
 
+
+        
 </script>
 </body>
 </html>
