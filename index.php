@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="col-6">
-                    <div class="card card-body bg-purple h-100 justify-content-center" onclick="window.location.href = '#';">
+                    <div class="card card-body bg-purple h-100 justify-content-center" onclick="window.location.href = 'verify.php';">
                         <div class="row">
                             <div class="col text-white align-items-center" style="text-align: center;">
                                 <h1 class="font-weight-bold">Verifikasi Sertifikat</h1>

@@ -245,6 +245,17 @@ session_start();
         canvas.centerObject(text[i]);
         canvas.add(text[i]);
     }
+    
+    //add dummy for id sertifikat
+    text[values[0].length] = new fabric.IText("Id Sertifikat",{
+        id: values[0].length,
+        originX: 'center', //added
+        originY: 'center', //added
+        centeredScaling: true
+    });
+    canvas.centerObject(text[values[0].length]);
+    canvas.add(text[values[0].length]);
+
     // send to back
     var sendSelectedObjectBack = function() {
         canvas.sendToBack(canvas.getActiveObject());
@@ -397,11 +408,11 @@ session_start();
 
     var qrimg = [];
     var images = [];
+    var username = 'pusbangki'; //SELECT username FROM user_table;
+    var id = 0; //SELECT id_sertifikat FROM user_table;
 
     //Fungsi untuk menggenerate semua qr dan menyimpan di url
     function generateAllQr(){
-        var username = 'pusbangki'; //SELECT username FROM user_table;
-        var id = 0; //SELECT id_sertifikat FROM user_table;
         for(i=1;i<values.length;i++){
             var qr = new QRious({
                 value: 'http://localhost/verify.php?id=\''+username+'_'+(id+i-1)+'\''
@@ -442,12 +453,16 @@ session_start();
 
     //Fungsi untuk menggenerate teks serta qr
     function generateall(i){
+        var id_serti = username + '_' + (id+i);
         var objects = canvas.getObjects();
         objects.forEach(function(o) {
             for(j=0;j<values[0].length;j++){
                 if(j == o.id){
                     o.set('text',values[i][j]);
                 }
+            }
+            if(o.id === values[0].length){
+                o.set('text', id_serti);
             }
             if(o.id === 'imgQr'){
                 if(i === 1){
@@ -466,6 +481,7 @@ session_start();
 
     //Fungsi untuk melakukan looping utama keseluruh row
     function loopG(){
+        id=0;
         for(i=1;i<values.length;i++){
             generateall(i);
             canvas.discardActiveObject().renderAll();
@@ -515,6 +531,9 @@ session_start();
                 if(xy === o.id){
                     o.set({text: values[0][xy]});
                 }
+            }
+            if(o.id === values[0].length){
+                o.set('text', 'Id Sertifikat');
             }
             if(o.id === 'imgQr'){
                 canvas.remove(o);

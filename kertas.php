@@ -40,7 +40,7 @@
                     <div class="row">
                         <div class="d-flex justify-content-end align-items-center">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="javascript:void(0)"><p class="text-dark">Home</p></a></li>
+                                <li class="breadcrumb-item"><a href="index.php"><p class="text-dark">Home</p></a></li>
                                 <li class="breadcrumb-item active">Atur Kertas</li>
                             </ol>
                         </div>

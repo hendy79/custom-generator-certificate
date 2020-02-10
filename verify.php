@@ -82,12 +82,12 @@ include "connection.php";
 <script>
         
 $(document).ready(function() {    
-    $('#serti').DataTable({
+    var table = $('#serti').DataTable({
         responsive: true,
         keepConditions: true
-    });
+    }); 
 });
-        
+
 </script>
 </body>
 </html>
