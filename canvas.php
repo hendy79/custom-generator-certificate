@@ -453,7 +453,7 @@ session_start();
 
     //Fungsi untuk menggenerate teks serta qr
     function generateall(i){
-        var id_serti = username + '_' + (id+i);
+        var id_serti = username + '_' + (id+i-1);
         var objects = canvas.getObjects();
         objects.forEach(function(o) {
             for(j=0;j<values[0].length;j++){
