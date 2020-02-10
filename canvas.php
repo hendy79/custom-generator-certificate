@@ -22,6 +22,7 @@ session_start();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
     <script src="assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="dist/js/qrious.js"></script>
 </head>
 <body>
 <!-- canvas -->
@@ -47,9 +48,12 @@ session_start();
         $width  = 792;
         $height = 612;
     }
-    echo '<canvas id="bg" width="'.$width.'" height="'.$height.'" style="border:1px solid black;"></canvas>';
+    echo '<canvas id="bg" width="'.$width.'" height="'.$height.'" style="border:1px solid black;">
+    </canvas>';
 ?>
 <!-- end canvas -->
+
+<!--<img src="assets/images/qrdummy.png" height="100" width="100" alt="Qr Code Dummy" id="qrdummy" >-->
 
 <!-- tambah gambar -->
 <input type="file" onchange="previewFile()" id="fileinput">
@@ -132,7 +136,17 @@ session_start();
     var values = <?php echo $_COOKIE['values']; ?>;
     var canvas = new fabric.Canvas('bg',{preserveObjectStacking :true});
 
-    
+    //modul generator sertifikat
+    var img = new Image();
+    img.src = 'assets/images/qrdummy.png';
+    fabric.Image.fromURL(img.src, function(oImg) { 
+        oImg.set({id: 'imgQr',
+            originX: 'center', 
+            originY: 'center',});
+        canvas.centerObject(oImg);
+        canvas.add(oImg);
+    });
+    //end modul
 
     // upload gambar
     function previewFile() {
@@ -143,8 +157,8 @@ session_start();
         reader.onloadend = function () {
             preview.src = reader.result;
             fabric.Image.fromURL(preview.src, function(oImg) { 
-                oImg.scaleToWidth(50);
-                oImg.scaleToHeight(50);
+                oImg.scaleToWidth(300);
+                oImg.scaleToHeight(300);
                 canvas.centerObject(oImg);
                 canvas.add(oImg);
             });
@@ -177,11 +191,6 @@ session_start();
         canvas.renderAll();
         sendSelectedObjectBack();
     };
-
-
-            
-            
-
 
     // delete all
     $(document).ready(function(){
@@ -264,15 +273,6 @@ session_start();
         canvas.renderAll();
     }
 
-    // generate values
-    /*canvas.getObjects().forEach(function(o) {
-        for(j=0;j<i;j++){
-            if(j == o.id){
-                o.set('text',values[1][j]);
-            }
-        }
-    });*/
-    
     // send to back
     var object;
     canvas.on('object:selected', function(event) {
@@ -388,80 +388,151 @@ session_start();
 
 
     var cvs = document.getElementById("bg");
-    var ctx = canvas.getContext("2d");
+    var ctx = cvs.getContext("2d");
+    var imgInstance;
+
+    function waitForImageToLoad(imageElement){
+        return new Promise(resolve=>{imageElement.onload = resolve})
+    }
+
+    var qrimg = [];
+    var images = [];
+
+    //Fungsi untuk menggenerate semua qr dan menyimpan di url
+    function generateAllQr(){
+        var username = 'pusbangki'; //SELECT username FROM user_table;
+        var id = 0; //SELECT id_sertifikat FROM user_table;
+        for(i=1;i<values.length;i++){
+            var qr = new QRious({
+                value: 'http://localhost/verify.php?id=\''+username+'_'+(id+i-1)+'\''
+            });
+            qrimg[i] = qr.toDataURL('image/png',1.0);
+        }
+    }
+
+    //Fungsi untuk menggenerate melakukan load semua image qr dari url
+    function preloadQr() {
+        for (var i = 1; i < values.length; i++) {
+            images[i] = new Image();
+            images[i].src = qrimg[i];
+            img.onload = canvas.renderAll();
+        }
+    }
+
+    //Fungsi untuk menggenerate qr dari url ke canvas
+    function generateqr(qrimg, objectElement, i){ 
+        images[i].height = 100;
+        images[i].width = 100;
+        imgInstance = new fabric.Image(images[i], {
+            id: objectElement[0],
+            scaleX: objectElement[1] / 100,
+            scaleY: objectElement[2] / 100
+        });
+        imgInstance.set({
+            left: objectElement[3],
+            top: objectElement[4],
+            originX: 'center', 
+            originY: 'center',
+            opacity: 1
+        });
+        canvas.add(imgInstance).renderAll();
+    }
+
+    var objectElement = null;
+
+    //Fungsi untuk menggenerate teks serta qr
+    function generateall(i){
+        var objects = canvas.getObjects();
+        objects.forEach(function(o) {
+            for(j=0;j<values[0].length;j++){
+                if(j == o.id){
+                    o.set('text',values[i][j]);
+                }
+            }
+            if(o.id === 'imgQr'){
+                if(i === 1){
+                    objectElement = new Array(o.id,o.getScaledWidth(),o.getScaledHeight(),o.left,o.top);
+                }
+
+                canvas.remove(o);
+
+                generateqr(qrimg, objectElement, i);
+            }
+        });
+    }
+
+    //var flagG = false;
+    var zip = new JSZip();
+
+    //Fungsi untuk melakukan looping utama keseluruh row
+    function loopG(){
+        for(i=1;i<values.length;i++){
+            generateall(i);
+            canvas.discardActiveObject().renderAll();
+            <?php 
+            $pformat = $_COOKIE['sformat'];
+            if($pformat == '"1"'){
+                echo 'var imgData = cvs.toDataURL("image/png", 1.0);';
+                    if($psize == '"1"'){
+                        echo 'var pdf = new jsPDF("l","pt","a3");';
+                    }elseif($psize == '"2"'){
+                        echo 'var pdf = new jsPDF("l","pt","a4");';
+                    }elseif($psize == '"3"'){
+                        echo 'var pdf = new jsPDF("l","pt","a5");';
+                    }elseif($psize == '"4"'){
+                        echo 'var pdf = new jsPDF("l","pt","b4");';
+                    }elseif($psize == '"5"'){
+                        echo 'var pdf = new jsPDF("l","pt","b5");';
+                    }elseif($psize == '"6"'){
+                        echo 'var pdf = new jsPDF("l","pt","letter");';
+                    }
+                echo 'var width = pdf.internal.pageSize.getWidth();
+                    var height = pdf.internal.pageSize.getHeight();
+                    pdf.addImage(imgData,"PNG", 0, 0, width, height);
+                    zip.file(\'Sertifikat\'+i+\'.pdf\', pdf.output(\'blob\'));';
+            }elseif($pformat == '"2"'){
+                echo 'var imgData = cvs.toDataURL("image/png", 1.0);
+                zip.file(\'Sertifikat\'+i+\'.png\', imgData.split(\'base64,\')[1],{base64: true});';
+            }elseif($pformat == '"3"'){
+                echo 'var imgData = cvs.toDataURL("image/jpg", 1.0);
+                zip.file(\'Sertifikat\'+i+\'.jpeg\', imgData.split(\'base64,\')[1],{base64: true});';
+            }
+            ?>
+    
+            /*  Increment Progress Bar
+            var elem = document.getElementById("myBar");
+            elem.style.width = 100 * i/(values.length) + "%";
+            elem.innerHTML = 100 * i/(values.length)  + "%";*/
+        }
+    }
 
     // generate sertifikat
     $(document).ready(function(){
         $("#generate").click(function(){
-            //$("#myModal").modal("show");
+            generateAllQr();
+            preloadQr();
+            
             $("#myModal").modal({
                 backdrop: "static", //remove ability to close modal with click
                 keyboard: false, //remove option to close with keyboard
                 show: true //Display loader!
-                
             });
 
-            $("#myModal").on('shown.bs.modal', function(){
-            var zip = new JSZip();
-            for(i=1;i<values.length;i++){
-                canvas.getObjects().forEach(function(o) {
-                    for(j=0;j<values[0].length;j++){
-                        if(j == o.id){
-                            o.set('text',values[i][j]);
-                        }
-                    }
+            $("#myModal").one('shown.bs.modal', function(){
+                loopG();
+
+                zip.generateAsync({type:"blob"}).then(function (blob) {
+                    saveAs(blob, "SertifikatBundle.zip");
+                }, function (err) {
+                    jQuery("#blob").text(err);
                 });
-                canvas.renderAll();
-                <?php 
-                $pformat = $_COOKIE['sformat'];
-                if($pformat == '"1"'){
-                    echo 'var imgData = cvs.toDataURL("image/png", 1.0);';
-                        if($psize == '"1"'){
-                            echo 'var pdf = new jsPDF("l","pt","a3");';
-                        }elseif($psize == '"2"'){
-                            echo 'var pdf = new jsPDF("l","pt","a4");';
-                        }elseif($psize == '"3"'){
-                            echo 'var pdf = new jsPDF("l","pt","a5");';
-                        }elseif($psize == '"4"'){
-                            echo 'var pdf = new jsPDF("l","pt","b4");';
-                        }elseif($psize == '"5"'){
-                            echo 'var pdf = new jsPDF("l","pt","b5");';
-                        }elseif($psize == '"6"'){
-                            echo 'var pdf = new jsPDF("l","pt","letter");';
-                        }
-                    echo 'var width = pdf.internal.pageSize.getWidth();
-                        var height = pdf.internal.pageSize.getHeight();
-                        pdf.addImage(imgData,"PNG", 0, 0, width, height);
-                        zip.file(\'Sertifikat\'+i+\'.pdf\', pdf.output(\'blob\'));';
-                }elseif($pformat == '"2"'){
-                    echo 'var imgData = cvs.toDataURL("image/png", 1.0);
-                    zip.file(\'Sertifikat\'+i+\'.png\', imgData.split(\'base64,\')[1],{base64: true});';
-                }elseif($pformat == '"3"'){
-                    echo 'var imgData = cvs.toDataURL("image/jpg", 1.0);
-                    zip.file(\'Sertifikat\'+i+\'.jpeg\', imgData.split(\'base64,\')[1],{base64: true});';
-                }
-                ?>
-        
-                /*  Increment Progress Bar
-                var elem = document.getElementById("myBar");
-                elem.style.width = 100 * i/(values.length) + "%";
-                elem.innerHTML = 100 * i/(values.length)  + "%";*/
 
-            }
-            zip.generateAsync({type:"blob"}).then(function (blob) {
-                saveAs(blob, "SertifikatBundle.zip");
-            }, function (err) {
-                jQuery("#blob").text(err);
+                $('#myModal').modal('hide');
+                return;
             });
-                /* Increment Progress Bar
-                var elem = document.getElementById("myBar");
-                elem.style.width = 100  + "%";
-                elem.innerHTML = 100  + "%";*/
-                alert("Berhasil generate "+i+" Sertifikat !!");
-                $('#myModal').modal('hide');  
-                
-            });
+            return;
         });
+        return;
     });
 
     canvas.renderAll();
