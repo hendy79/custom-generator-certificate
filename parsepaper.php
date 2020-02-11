@@ -3,10 +3,12 @@
         if (isset($_COOKIE['spsize'])) {
             del_cookie();
         }
-        $qr = (isset($_POST['igqr'])) ? 1 : 0;
+        $qr = (isset($_POST['igqr'])) ? true : false;
+        $idserti = (isset($_POST['igserti'])) ? true : false;
         set_cookie('spsize', $_POST["igpsize"]);
         set_cookie('sformat', $_POST["igformat"]);
         set_cookie('sqr', $qr);
+        set_cookie('sidserti', $idserti);
         set_cookie('sexp', $_POST["igexp"]);
         if (isset($_COOKIE['values'])) {
             unset($_COOKIE['values']); 
@@ -19,10 +21,12 @@
         if (isset($_COOKIE['spsize'])) {
             del_cookie();
         }
-        $qr = (isset($_POST['igqr'])) ? 1 : 0;
+        $qr = (isset($_POST['igqr'])) ? true : false;
+        $idserti = (isset($_POST['igserti'])) ? true : false;
         set_cookie('spsize', $_POST["igpsize"]);
         set_cookie('sformat', $_POST["igformat"]);
         set_cookie('sqr', $qr);
+        set_cookie('sidserti', $idserti);
         set_cookie('sexp', $_POST["igexp"]);
         if (isset($_COOKIE['values'])) {
             unset($_COOKIE['values']); 

@@ -135,17 +135,22 @@ session_start();
     <script>
     var values = <?php echo $_COOKIE['values']; ?>;
     var canvas = new fabric.Canvas('bg',{preserveObjectStacking :true});
+    var useqr = <?php echo $_COOKIE['sqr']; ?>;
+    var useidserti = <?php echo $_COOKIE['sidserti']; ?>;
+    console.log(useidserti);
 
     //modul generator sertifikat
-    var img = new Image();
-    img.src = 'assets/images/qrdummy.png';
-    fabric.Image.fromURL(img.src, function(oImg) { 
-        oImg.set({id: 'imgQr',
-            originX: 'center', 
-            originY: 'center',});
-        canvas.centerObject(oImg);
-        canvas.add(oImg);
-    });
+    if(useqr){
+        var img = new Image();
+        img.src = 'assets/images/qrdummy.png';
+        fabric.Image.fromURL(img.src, function(oImg) { 
+            oImg.set({id: 'imgQr',
+                originX: 'center', 
+                originY: 'center',});
+            canvas.centerObject(oImg);
+            canvas.add(oImg);
+        });
+    }
     //end modul
 
     // upload gambar
@@ -247,14 +252,16 @@ session_start();
     }
     
     //add dummy for id sertifikat
-    text[values[0].length] = new fabric.IText("Id Sertifikat",{
-        id: values[0].length,
-        originX: 'center', //added
-        originY: 'center', //added
-        centeredScaling: true
-    });
-    canvas.centerObject(text[values[0].length]);
-    canvas.add(text[values[0].length]);
+    if(useidserti){
+        text[values[0].length] = new fabric.IText("Id Sertifikat",{
+            id: values[0].length,
+            originX: 'center', //added
+            originY: 'center', //added
+            centeredScaling: true
+        });
+        canvas.centerObject(text[values[0].length]);
+        canvas.add(text[values[0].length]);
+    }
 
     // send to back
     var sendSelectedObjectBack = function() {
@@ -461,10 +468,10 @@ session_start();
                     o.set('text',values[i][j]);
                 }
             }
-            if(o.id === values[0].length){
+            if(o.id === values[0].length && useidserti){
                 o.set('text', id_serti);
             }
-            if(o.id === 'imgQr'){
+            if(o.id === 'imgQr' && useqr){
                 if(i === 1){
                     objectElement = new Array(o.id,o.getScaledWidth(),o.getScaledHeight(),o.left,o.top);
                 }
@@ -532,10 +539,10 @@ session_start();
                     o.set({text: values[0][xy]});
                 }
             }
-            if(o.id === values[0].length){
+            if(o.id === values[0].length && useidserti){
                 o.set('text', 'Id Sertifikat');
             }
-            if(o.id === 'imgQr'){
+            if(o.id === 'imgQr' && useqr){
                 canvas.remove(o);
                 fabric.Image.fromURL(img.src, function(oImg) { 
                     oImg.set({id: 'imgQr',

@@ -112,6 +112,10 @@
                                                     <input id="igqr" name="igqr" type="checkbox" data-toggle="toggle" checked>
                                                 </div>
                                                 <div class="form-group row">
+                                                    <label for="igserti" class="col-sm-2 col-form-label">Gunakan Id Sertifikat</label>
+                                                    <input id="igserti" name="igserti" type="checkbox" data-toggle="toggle" checked>
+                                                </div>
+                                                <div class="form-group row">
                                                     <label for="igexp" class="col-sm-2 col-form-label">Tentukan Masa Berlaku</label>
                                                     <select name="igexp" id="igexp">
                                                         <option value="NULL">Permanen</option>
@@ -133,13 +137,5 @@
             </div>
         </div>
 
-    <script>
-
-
-
-
-
-
-    </script>
     </body>
 </html>
