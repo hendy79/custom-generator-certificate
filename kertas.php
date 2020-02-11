@@ -12,6 +12,11 @@
         <title>Custom Sertifikat</title>
         <!-- Custom CSS -->
         <link href="dist/css/style.min.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+        <script src="assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+        <script src="assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+        
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -91,6 +96,35 @@
                                     <div class="text-muted mt-3">
                                         * = Required
                                     </div>
+                                    <div class="accordion" id="accordionExample">
+                                        <div class="card">
+                                            <div class="card-header" id="headingTwo">
+                                                <h2 class="text-right">
+                                                    <button class="btn collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                        Advanced Option
+                                                    </button>
+                                                </h2>
+                                            </div>
+                                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                            <div class="card-body">
+                                                <div class="form-group row">
+                                                    <label for="igqr" class="col-sm-2 col-form-label">Gunakan QR Code</label>
+                                                    <input id="igqr" name="igqr" type="checkbox" data-toggle="toggle" checked>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="igexp" class="col-sm-2 col-form-label">Tentukan Masa Berlaku</label>
+                                                    <select name="igexp" id="igexp">
+                                                        <option value="NULL">Permanen</option>
+                                                        <option value="1">1 Tahun</option>
+                                                        <option value="2">2 Tahun</option>
+                                                        <option value="3">3 Tahun</option>
+                                                        <option value="4">4 Tahun</option>
+                                                        <option value="5">5 Tahun</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -98,5 +132,14 @@
                 </div>
             </div>
         </div>
+
+    <script>
+
+
+
+
+
+
+    </script>
     </body>
 </html>
