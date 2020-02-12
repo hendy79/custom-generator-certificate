@@ -1,127 +1,42 @@
-CREATE DATABASE serti;
+CREATE DATABASE `serti`;
 
-USE serti;
+USE `serti`;
 
-CREATE TABLE `organizer` (
-  `id` INT(11) UNSIGNED NOT NULL,
-  `nama_organizer` VARCHAR(255) NOT NULL
-) ENGINE=INNODB DEFAULT CHARSET=latin1;
+CREATE TABLE `user` (
+  `username` VARCHAR(255) NOT NULL,
+  `Nama` VARCHAR(255) NOT NULL
+);
 
---
--- Dumping data for table `organizer`
---
-
-INSERT INTO `organizer` (`id`, `nama_organizer`) VALUES
-(1, 'UKK PUSBANGKI'),
-(2, 'Fakultas Kedokteran UI'),
-(3, 'ESQ Training');
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `event`
---
-
-CREATE TABLE `event` (
-  `id` INT(10) UNSIGNED NOT NULL,
-  `nama_event` VARCHAR(255) NOT NULL,
-  `waktu_event` DATE NOT NULL,
-  `organizer_id` INT(10) UNSIGNED NOT NULL
-) ENGINE=INNODB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `event`
---
-
-INSERT INTO `event` (`id`, `nama_event`, `waktu_event`, `organizer_id`) VALUES
-(1, 'Workshop', '2020-02-07', 1),
-(2, 'Seminar Kesehatan', '2020-02-07', 2),
-(3, 'Job Fair', '2020-02-07', 1);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `sertifikat`
---
+INSERT INTO `user` (`username`, `Nama`) VALUES
+('pusbangki', 'PUSBANGKI');
 
 CREATE TABLE `sertifikat` (
   `id` VARCHAR(255) NOT NULL,
   `nama` VARCHAR(255) NOT NULL,
   `tgl_keluar` DATE NOT NULL,
-  `tgl_exp` DATE NOT NULL,
-  `event_id` INT(10) UNSIGNED NOT NULL,
-  `organizer_id` INT(10) UNSIGNED NOT NULL
-) ENGINE=INNODB DEFAULT CHARSET=latin1;
+  `tgl_exp` DATE DEFAULT NULL,
+  `username_id` VARCHAR(255) NOT NULL,
+  `event` VARCHAR(255) NOT NULL,
+  `organizer` VARCHAR(255) NOT NULL
+);
 
---
--- Dumping data for table `sertifikat`
---
+INSERT INTO `sertifikat` (`id`, `nama`, `tgl_keluar`, `tgl_exp`, `username_id`, `event`, `organizer`) VALUES
+('pusbangki_0', 'Hendy', '2020-02-07', '2024-02-07', 'pusbangki', 'Kerja Praktek', 'UKK PUSBANGKI'),
+('pusbangki_1', 'Alland Chandra Kesuma', '2020-02-07', '2024-02-07', 'pusbangki', 'Kerja Praktek', 'UKK PUSBANGKI'),
+('pusbangki_2', 'Muhammad Khoiri Muzzaki', '2020-02-07', '2024-02-07', 'pusbangki', 'Kerja Praktek', 'UKK PUSBANGKI'),
+('pusbangki_3', 'Muhammad Sabiil', '2020-02-07', '2024-02-07', 'pusbangki', 'Kerja Praktek', 'UKK PUSBANGKI'),
+('pusbangki_4', 'Dani Abdul Malik', '2020-02-11', '2024-02-07', 'pusbangki', 'Kerja Praktek', 'UKK PUSBANGKI'),
+('pusbangki_5', 'Evita Oktaviani', '2020-02-11', '2024-02-07', 'pusbangki', 'Kerja Praktek', 'UKK PUSBANGKI');
 
-INSERT INTO `sertifikat` (`id`, `nama`, `tgl_keluar`, `tgl_exp`, `event_id`, `organizer_id`) VALUES
-('pusbangki_0', 'Alland', '2020-02-07', '2024-02-07', 3, 1),
-('pusbangki_1', 'Hendy', '2020-02-07', '2024-02-07', 1, 1),
-('pusbangki_2', 'Zaki', '2020-02-07', '2024-02-07', 2, 2),
-('pusbangki_3', 'Sabiil', '2020-02-07', '2024-02-07', 1, 1);
 
---
--- Indexes for dumped tables
---
+ALTER TABLE `sertifikat`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_user` (`username_id`);
 
---
--- Indexes for table `organizer`
---
-ALTER TABLE `organizer`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`username`);
+
+ALTER TABLE `sertifikat`
+  ADD CONSTRAINT `fk_user` FOREIGN KEY (`username_id`) REFERENCES `user` (`username`) ON UPDATE CASCADE;
   
---
--- Indexes for table `event`
---
-ALTER TABLE `event`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `organizer_id` (`organizer_id`);
-
-
-
-
---
--- Indexes for table `sertifikat`
---
-ALTER TABLE `sertifikat`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `event_id` (`event_id`),
-  ADD KEY `organizer_id` (`organizer_id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `event`
---
-ALTER TABLE `event`
-  MODIFY `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `organizer`
---
-ALTER TABLE `organizer`
-  MODIFY `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `event`
---
-ALTER TABLE `event`
-  ADD CONSTRAINT `fk_event_organizer` FOREIGN KEY (`organizer_id`) REFERENCES `organizer` (`id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `sertifikat`
---
-ALTER TABLE `sertifikat`
-  ADD CONSTRAINT `fk_event` FOREIGN KEY (`event_id`) REFERENCES `event` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_organizer` FOREIGN KEY (`organizer_id`) REFERENCES `organizer` (`id`) ON UPDATE CASCADE;
-COMMIT;
+SELECT * FROM sertifikat;

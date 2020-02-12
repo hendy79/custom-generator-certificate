@@ -417,11 +417,11 @@ include "connection.php";
     var images = [];
     <?php 
         $sqlid = "SELECT COUNT(username_id) as id FROM `sertifikat`";
-        $sid = $con->query($sqlid);
-        $id=mysqli_fetch_assoc($sid);
+        $result = $con->query($sqlid);
+        $row = mysqli_fetch_assoc($result);
     ?>
     var username = 'pusbangki'; //SELECT username FROM user_table (tunggu ada login);
-    var id = parseInt(<?php echo $id['id']; ?>);
+    var id = parseInt(<?php echo $row['id']; ?>);
     
     //Fungsi untuk menggenerate semua qr dan menyimpan di url
     function generateAllQr(){
@@ -493,7 +493,7 @@ include "connection.php";
 
     //Fungsi untuk melakukan looping utama keseluruh row
     function loopG(){
-        id=<?php echo $id['id']; ?>;
+        id=<?php echo $row['id']; ?>;
         for(i=1;i<values.length;i++){
             generateall(i);
             sendtoDB(i);
@@ -566,10 +566,19 @@ include "connection.php";
         });
         canvas.renderAll();
     }
+    var indexnamapeserta;
 
+    function getIndexNamaPeserta(){
+        for(index=0;index<values[0].length;index++){
+            if(values[0][index].toLowerCase() == "nama"){
+                return index;
+            }
+        }
+    }
     // generate sertifikat
     $(document).ready(function(){
         $("#generate").click(function(){
+            indexnamapeserta = getIndexNamaPeserta();
             generateAllQr();
             preloadQr();
             
@@ -597,16 +606,14 @@ include "connection.php";
     });
 
     function sendtoDB(i){
-        var id_ser = username + '_' + (id+i-1)
-        var nama='dummy';
-        var dataString = 'id_ser='+id_ser+'&nama='+nama+'';
-
+        var id_ser = username + '_' + (id+i-1);
+        var dataString = 'id_ser='+id_ser+'&nama='+values[i][indexnamapeserta]+'&username='+username;
         $.ajax
         ({
-        url: "sendtoDB.php",
-        type : "GET",
-        cache : false,
-        data : dataString,
+            url: "sendtoDB.php",
+            type : "GET",
+            cache : false,
+            data : dataString
         });
     }
 
