@@ -1,5 +1,6 @@
 <?php
 session_start();
+include "connection.php";
 ?>
 
 <!DOCTYPE html>
@@ -137,7 +138,6 @@ session_start();
     var canvas = new fabric.Canvas('bg',{preserveObjectStacking :true});
     var useqr = <?php echo $_COOKIE['sqr']; ?>;
     var useidserti = <?php echo $_COOKIE['sidserti']; ?>;
-    console.log(useidserti);
 
     //modul generator sertifikat
     if(useqr){
@@ -415,14 +415,19 @@ session_start();
 
     var qrimg = [];
     var images = [];
-    var username = 'pusbangki'; //SELECT username FROM user_table;
-    var id = 0; //SELECT id_sertifikat FROM user_table;
-
+    <?php 
+        $sqlid = "SELECT COUNT(username_id) as id FROM `sertifikat`";
+        $sid = $con->query($sqlid);
+        $id=mysqli_fetch_assoc($sid);
+    ?>
+    var username = 'pusbangki'; //SELECT username FROM user_table (tunggu ada login);
+    var id = parseInt(<?php echo $id['id']; ?>);
+    
     //Fungsi untuk menggenerate semua qr dan menyimpan di url
     function generateAllQr(){
         for(i=1;i<values.length;i++){
             var qr = new QRious({
-                value: 'http://localhost/verify.php?id=\''+username+'_'+(id+i-1)+'\''
+                value: 'http://localhost/verify.php?id='+username+'_'+(id+i-1)+''
             });
             qrimg[i] = qr.toDataURL('image/png',1.0);
         }
@@ -488,9 +493,10 @@ session_start();
 
     //Fungsi untuk melakukan looping utama keseluruh row
     function loopG(){
-        id=0;
+        id=<?php echo $id['id']; ?>;
         for(i=1;i<values.length;i++){
             generateall(i);
+            sendtoDB(i);
             canvas.discardActiveObject().renderAll();
             <?php 
             $pformat = $_COOKIE['sformat'];
@@ -589,6 +595,20 @@ session_start();
         });
         return;
     });
+
+    function sendtoDB(i){
+        var id_ser = username + '_' + (id+i-1)
+        var nama='dummy';
+        var dataString = 'id_ser='+id_ser+'&nama='+nama+'';
+
+        $.ajax
+        ({
+        url: "sendtoDB.php",
+        type : "GET",
+        cache : false,
+        data : dataString,
+        });
+    }
 
     canvas.renderAll();
 
