@@ -102,9 +102,10 @@ $(document).ready(function() {
     table.columns().every( function () {
         var that = this;
         $( 'input', this.footer() ).on( 'keyup change clear load', function () {
+            table.fnFilter("^" + this.value + "$", 0, false);
             if ( that.search() !== this.value ) {
                 that
-                    .search( this.value )
+                    .search( this.value ,true, false,true)
                     .draw();
             }
         });
@@ -118,7 +119,7 @@ $(document).ready(function() {
         $( 'input', this.footer() ).on( 'keydown', function () {
             if (e.keyCode === 13) {
                 that
-                    .search( this.value )
+                    .search( this.value ,true, false,true)
                     .draw();
             }
         });
