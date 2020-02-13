@@ -41,11 +41,7 @@ include "connection.php";
                 <table id="serti" class="table table-responsive table-hover table-bordered text-center"> 
                     <?php   
                     $sql = "SELECT * FROM `sertifikat`";
-                    $sql1 = "SELECT s.id, s.nama, s.tgl_keluar, s.tgl_exp, o.nama_organizer, e.nama_event
-                            FROM sertifikat s 
-                            INNER JOIN organizer o ON s.organizer_id = o.id
-                            INNER JOIN `event` e ON s.event_id = e.id";
-                    $srt = $con->query($sql1);
+                    $srt = $con->query($sql);
                     
                     ?>
                     <thead>
@@ -64,8 +60,8 @@ include "connection.php";
                             <tr>
                                 <td><?php echo $row['id'];?></td>
                                 <td><?php echo $row['nama'];?></td>
-                                <td><?php echo $row['nama_event'];?></td>
-                                <td><?php echo $row['nama_organizer'];?></td>
+                                <td><?php echo $row['event'];?></td>
+                                <td><?php echo $row['organizer'];?></td>
                                 <td><?php echo $row['tgl_keluar'];?></td>
                                 <td><?php echo $row['tgl_exp'];?></td>
                             </tr>
@@ -113,7 +109,7 @@ $(document).ready(function() {
             }
         });
     });
-
+    
     table.columns().every( function () {
         var e = jQuery.Event("keydown", {
         keyCode: 13
