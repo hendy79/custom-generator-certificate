@@ -1,6 +1,6 @@
-# Project Title
+# Project Title & Description
 
-Custom Certificate Generator
+Custom Certificate Generator - An project to generate certificate and verificate the certificate.
 
 ## Getting Started
 
@@ -31,7 +31,7 @@ A step by step series of examples that tell you how to get a development env run
 
 * **Hendy**
 * **M. Khoiri Muzakki**
-* **Alland Chandra .K**
+* **Alland Chandra K.**
 
 ## License
 
