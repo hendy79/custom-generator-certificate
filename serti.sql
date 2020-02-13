@@ -21,12 +21,12 @@ CREATE TABLE `sertifikat` (
 );
 
 INSERT INTO `sertifikat` (`id`, `nama`, `tgl_keluar`, `tgl_exp`, `username_id`, `event`, `organizer`) VALUES
-('pusbangki_0', 'Hendy', '2020-02-07', '2024-02-07', 'pusbangki', 'Kerja Praktek', 'UKK PUSBANGKI'),
-('pusbangki_1', 'Alland Chandra Kesuma', '2020-02-07', '2024-02-07', 'pusbangki', 'Kerja Praktek', 'UKK PUSBANGKI'),
-('pusbangki_2', 'Muhammad Khoiri Muzzaki', '2020-02-07', '2024-02-07', 'pusbangki', 'Kerja Praktek', 'UKK PUSBANGKI'),
-('pusbangki_3', 'Muhammad Sabiil', '2020-02-07', '2024-02-07', 'pusbangki', 'Kerja Praktek', 'UKK PUSBANGKI'),
-('pusbangki_4', 'Dani Abdul Malik', '2020-02-11', '2024-02-07', 'pusbangki', 'Kerja Praktek', 'UKK PUSBANGKI'),
-('pusbangki_5', 'Evita Oktaviani', '2020-02-11', '2024-02-07', 'pusbangki', 'Kerja Praktek', 'UKK PUSBANGKI');
+('pusbangki_0', 'Hendy', '2020-02-07', NULL, 'pusbangki', 'Kerja Praktek', 'UKK PUSBANGKI FKUI'),
+('pusbangki_1', 'Alland Chandra Kesuma', '2020-02-07', NULL, 'pusbangki', 'Kerja Praktek', 'UKK PUSBANGKI FKUI'),
+('pusbangki_2', 'Muhammad Khoiri Muzzaki', '2020-02-07', NULL, 'pusbangki', 'Kerja Praktek', 'UKK PUSBANGKI FKUI'),
+('pusbangki_3', 'Muhammad Sabiil', '2020-02-07', NULL, 'pusbangki', 'Kerja Praktek', 'UKK PUSBANGKI FKUI'),
+('pusbangki_4', 'Dani Abdul Malik', '2020-02-11', NULL, 'pusbangki', 'Kerja Praktek', 'UKK PUSBANGKI FKUI'),
+('pusbangki_5', 'Evita Oktaviani', '2020-02-11', NULL, 'pusbangki', 'Kerja Praktek', 'UKK PUSBANGKI FKUI');
 
 
 ALTER TABLE `sertifikat`
