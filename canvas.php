@@ -597,7 +597,7 @@ include "connection.php";
     function generateAllQr(){
         for(i=1;i<values.length;i++){
             var qr = new QRious({
-                value: 'http://localhost/verify.php?id='+username+'_'+(id+i-1)+'$'
+                value: 'http://localhost/search.php?id='+username+'_'+(id+i-1)+''
             });
             qrimg[i] = qr.toDataURL('image/png',1.0);
         }

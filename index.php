@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="row" style="height: 30rem;">
-                <div class="col-6">
+                <div class="col-4">
                     <div class="card card-body bg-primary h-100 justify-content-center" onclick="window.location.href = 'kertas.php';">
                         <div class="row">
                             <div class="col text-white align-items-center" style="text-align: center;">
@@ -36,11 +36,20 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-4">
                     <div class="card card-body bg-purple h-100 justify-content-center" onclick="window.location.href = 'verify.php';">
                         <div class="row">
                             <div class="col text-white align-items-center" style="text-align: center;">
                                 <h1 class="font-weight-bold">Verifikasi Sertifikat</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card card-body bg-warning h-100 justify-content-center" onclick="window.location.href = 'search.php';">
+                        <div class="row">
+                            <div class="col text-white align-items-center" style="text-align: center;">
+                                <h1 class="font-weight-bold">Cek Sertifikat</h1>
                             </div>
                         </div>
                     </div>
