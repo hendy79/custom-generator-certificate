@@ -37,7 +37,7 @@ require("connection.php");
                         <div class="row">
                             <div class="col-sm-12 col-xs-12">
                                 <!-- Content here -->
-                                <form method="post" id="searchme" name="searchme">
+                                <form action="search.php" method="post" id="searchme" name="searchme">
                                     <div class="text-center">
                                         <h1>Search ID</h1><br>   
                                         <?php 
@@ -50,7 +50,7 @@ require("connection.php");
                                     </div>
                                     <div class="text-center">
                                     <br>
-                                    <button type="submit" id="find" name="find">Search Now!</button>
+                                    <button type="submit" id="find" class="btn btn-success mr-2" name="find">Search Now!</button>
                                     </div>
                                 </form>
                             </div>
@@ -58,52 +58,38 @@ require("connection.php");
                     </div>
                 </div>
             </div>
-        
         <?php
-        if(isset($_POST['find'])){
-            $search_val=$_POST['findme'];
-            $sql= "SELECT * FROM `sertifikat` WHERE `id`='$search_val'";
-            $srt = $con->query($sql);  
-            $row = mysqli_fetch_assoc($srt);
-        }
-        if(!empty($row)){
-            echo '
-                <div class="row justify-content-center" id="dataserti">
-                    <div class="col-3">
-                        <div class="card card-body justify-content-center">
-                            <div class="row" >
-                                <div class="col-sm-12 col-xs-12 align-items-center">
-                                    <p>ID Sertifikat  = ';echo $row['id']; echo'</p>
-                                    <p>Nama Pemilik   = ';echo $row['nama']; echo'</p>
-                                    <p>Event          = ';echo $row['event']; echo'</p>
-                                    <p>Organizer      = ';echo $row['organizer']; echo'</p>
-                                    <p>Tanggal Keluar = ';echo $row['tgl_keluar']; echo'</p>
-                                    <p>Tanggal Expire = ';echo $row['tgl_exp']; echo'</p>
+            if(isset($_POST['find'])){
+                $search_val=$_POST['findme'];
+                $sql= "SELECT * FROM `sertifikat` WHERE `id`='$search_val'";
+                $srt = $con->query($sql);  
+                $row = mysqli_fetch_assoc($srt);
+            }
+            if(!empty($row)){
+                echo '
+                    <div class="row justify-content-center" id="dataserti">
+                        <div class="col-3">
+                            <div class="card card-body justify-content-center">
+                                <div class="row" >
+                                    <div class="col-sm-12 col-xs-12 align-items-center">
+                                        <p>ID Sertifikat  = ';echo $row['id']; echo'</p>
+                                        <p>Nama Pemilik   = ';echo $row['nama']; echo'</p>
+                                        <p>Event          = ';echo $row['event']; echo'</p>
+                                        <p>Organizer      = ';echo $row['organizer']; echo'</p>
+                                        <p>Tanggal Keluar = ';echo $row['tgl_keluar']; echo'</p>
+                                        <p>Tanggal Expire = ';echo $row['tgl_exp']; echo'</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>';      
-        }else{
-            echo '
-                <div class="row justify-content-center" id="dataserti">
-                    <div class="col-3">
-                        <div class="card card-body justify-content-center">
-                            <div class="row" >
-                                <div class="col-sm-12 col-xs-12 text-center">
-                                    <p>Data Kosong</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>'; 
-        }
+                    </div>';      
+            }
         ?>
     </div>
     <script>
         var element =  document.getElementById('dataserti');
-        if (typeof(element) == 'undefined' || element == null)
-        {   
+        //if div is not exists
+        if (typeof(element) == 'undefined' || element == null){   
             <?php 
                 $link=null;
                 if(!empty($_GET['id'])){
@@ -111,11 +97,10 @@ require("connection.php");
                 }
             ?>
             var x= '<?php echo $link;?>';
-            if(!(x == "" || x==null)){
+            if(!(x == "" || x == null)){
                 document.getElementById('find').click();   
             }
         }
-        
     </script>
     </body>
     
