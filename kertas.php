@@ -76,7 +76,8 @@
                                         <label class="form-group-text" for="igformat">Format Ekspor*</label>
                                         <select class="form-control custom-select" id="igformat" name="igformat">
                                             <option value="" disabled selected>Pilih Disini</option>
-                                            <option value="1">pdf</option>
+                                            <option value="1">pdf (Separated)</option>
+                                            <option value="4">pdf (1 File)</option>
                                             <option value="2">png</option>
                                             <option value="3">jpeg</option>
                                         </select>

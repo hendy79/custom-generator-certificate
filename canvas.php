@@ -20,8 +20,10 @@ include "connection.php";
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/fabric/dist/fabric.min.js"></script>
     <script src="node_modules/jszip/dist/jszip.min.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Times+New+Roman|candara|calibri|sans-serif|monospace|cursive|arial|courier|tahoma|impact|Brush+Script+MT' rel='stylesheet' type='text/css'>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script src="assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="dist/js/qrious.js"></script>
 </head>
@@ -98,23 +100,33 @@ include "connection.php";
 <!-- set font-family -->
 <select id="fontFamily" name="fontFamily">
     <option value="" disabled selected>Font Family</option>
-    <option value="Times New Roman">Times New Roman</option>
-    <option value="candara">Candara</option>
-    <option value="calibri">Calibri</option>
-    <option value="sans-serif">Sans-Serif</option>
-    <option value="monospace">Monospace</option>
-    <option value="cursive">Cursive</option>
-    <option value="arial">Arial</option>
-    <option value="courier">Courier</option>
-    <option value="tahoma">Impact</option>
-    <option value="impact">Tahoma</option>
-    <option value="Brush Script MT">Brush Script MT</option>
+    <option value="Times New Roman" style="font-family:Times new roman" >Times New Roman</option>
+    <option value="candara" style="font-family:candara">Candara</option>
+    <option value="calibri" style="font-family:calibri">Calibri</option>
+    <option value="sans-serif" style="font-family:sans-serif">Sans-Serif</option>
+    <option value="monospace" style="font-family:monospace">Monospace</option>
+    <option value="cursive" style="font-family:cursive">Cursive</option>
+    <option value="arial" style="font-family:arial">Arial</option>
+    <option value="courier" style="font-family:courier">Courier</option>
+    <option value="tahoma" style="font-family:tahoma">Tahoma</option>
+    <option value="impact" style="font-family:impact">Impact</option>
+    <option value="Brush Script MT" style="font-family:Brush Script MT">Brush Script MT</option>
 </select>
 <!-- end set font-family -->
 
 <!-- set font-size -->
 <input type="number" id="fontSize" name="points" step="1" placeholder="Font Size">
 <!-- end set font-size -->
+
+<!-- Undo Button -->
+<button id="undo" disabled>Undo</button>
+<!-- end Undo Button -->
+<!-- Redo Button -->
+<button id="redo" disabled>Redo</button>
+<!-- end Redo Button -->
+<!-- eyeDropper color -->
+<button id="eyeDropper">Eye Dropper</button>
+<!-- end eyeDropper color -->
 
 <!-- generate canvas -->
 <button id="generate">Generate!</button>
@@ -138,6 +150,14 @@ include "connection.php";
     var canvas = new fabric.Canvas('bg',{preserveObjectStacking :true});
     var useqr = <?php echo $_COOKIE['sqr']; ?>;
     var useidserti = <?php echo $_COOKIE['sidserti']; ?>;
+    // current unsaved state
+    var state;
+    // past states
+    var undo = [];
+    // reverted states
+    var redo = [];
+
+    var globalColor = "";
 
     //modul generator sertifikat
     if(useqr){
@@ -195,6 +215,7 @@ include "connection.php";
         canvas.centerObject(canvas.getActiveObject());
         canvas.renderAll();
         sendSelectedObjectBack();
+        save();
     };
 
     // delete all
@@ -235,6 +256,7 @@ include "connection.php";
                 centeredScaling: true});
             canvas.centerObject(txtmnl);
             canvas.add(txtmnl);
+            save();
         });
     });
 
@@ -290,6 +312,71 @@ include "connection.php";
         // canvas.discardActiveObject();
         canvas.renderAll();
     }
+    var save = function() {
+        // clear the redo stack
+        redo = [];
+        $('#redo').prop('disabled', true);
+        // initial call won't have a state
+        if (state) {
+            undo.push(state);
+            $('#undo').prop('disabled', false);
+        }
+        state = JSON.stringify(canvas);
+    }
+
+    var replay =  function (playStack, saveStack, buttonsOn, buttonsOff) {
+        saveStack.push(state);
+        state = playStack.pop();
+        var on = $(buttonsOn);
+        var off = $(buttonsOff);
+        // turn both buttons off for the moment to prevent rapid clicking
+        on.prop('disabled', true);
+        off.prop('disabled', true);
+        canvas.clear();
+        canvas.loadFromJSON(state, function() {
+            canvas.renderAll();
+            // now turn the buttons back on if applicable
+            on.prop('disabled', false);
+            if (playStack.length) {
+            off.prop('disabled', false);
+            }
+        });
+    }
+    var eyeDropper = function() {
+        canvas.on('mouse:move', function(options) {
+            const bg = document.getElementById("bg");
+            const ctx = bg.getContext("2d");
+            let pointer = canvas.getPointer(options.e)
+            let x = parseInt(pointer.x - bg.offsetLeft);
+            let y = parseInt(pointer.y - bg.offsetTop);
+            let imagesData = ctx.getImageData(x, y, 1, 1);
+
+            let newColor = [
+            imagesData.data[0],
+            imagesData.data[1],
+            imagesData.data[2]
+            ];
+
+            globalColor = `rgb(${newColor.join()})`;
+            let colorInput = $("#warna").val();
+
+            colorInput = "#fff";
+            console.log(colorInput);
+
+            canvas.getActiveObject && canvas.getActiveObject().set({
+                fill: globalColor,
+            });
+            canvas.renderAll();
+
+            canvas.on('mouse:down', function() {
+                // colorInput = "#fff"
+                // console.log(colorInput);
+                canvas.off('mouse:move', eyeDropper());
+            })
+        })
+    }
+
+    $("#eyeDropper").click(() => eyeDropper());
 
     // send to back
     var object;
@@ -308,6 +395,10 @@ include "connection.php";
         document.getElementById("fontSize").value = canvas.getActiveObject().get("fontSize");
         //console.log(object);
     });
+    canvas.on('object:modified', function() {
+        save();
+    });
+    
 
     // event
     document.onkeydown = function(e) {
@@ -366,7 +457,86 @@ include "connection.php";
                 break;
         }
     };
+    $(document).ready(function() {
+        var ctrlDown = false,
+            ctrlKey = 17,
+            cmdKey = 91,
+            cKey = 67;
+            vKey = 86,
+            yKey = 89;
+            zKey = 90;
+        
+        save();
 
+        $(document).keydown(function(e) {
+            if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = true;
+        }).keyup(function(e) {
+            if (e.keyCode == ctrlKey || e.keyCode == cmdKey) ctrlDown = false;
+        });
+
+        $(".no-copy-paste").keydown(function(e) {
+            if (ctrlDown && (e.keyCode == vKey || e.keyCode == cKey)) return false;
+        });
+        
+        // Document Ctrl + C/V 
+        $(document).keydown(function(e) {
+            if (ctrlDown && (e.keyCode == cKey)){
+                // function Copy() {
+                    // clone what are you copying since you
+                    // may want copy and paste on different moment.
+                    // and you do not want the changes happened
+                    // later to reflect on the copy.
+                    canvas.getActiveObject().clone(function(cloned) {
+                        _clipboard = cloned;
+                    });
+                // }
+            };
+
+            if (ctrlDown && (e.keyCode == vKey)) {
+                // function Paste() {
+                    // clone again, so you can do multiple copies.
+                    _clipboard.clone(function(clonedObj) {
+                        canvas.discardActiveObject();
+                        clonedObj.set({
+                            left: clonedObj.left + 10,
+                            top: clonedObj.top + 10,
+                            evented: true,
+                        });
+                        if (clonedObj.type === 'activeSelection') {
+                            // active selection needs a reference to the canvas.
+                            clonedObj.canvas = canvas;
+                            clonedObj.forEachObject(function(obj) {
+                                canvas.add(obj);
+                            });
+                            // this should solve the unselectability
+                            clonedObj.setCoords();
+                        } else {
+                            canvas.add(clonedObj);
+                        }
+                        _clipboard.top += 10;
+                        _clipboard.left += 10;
+                        canvas.setActiveObject(clonedObj);
+                        canvas.requestRenderAll();
+                    });
+                // }
+            };
+
+            if(ctrlDown && (e.keyCode == yKey)) {
+                replay(redo, undo, '#undo', this);
+            }
+
+            if(ctrlDown && (e.keyCode == zKey)) {
+                replay(undo, redo, '#redo', this);
+            }
+        });
+    });
+    // undo and redo buttons
+    $('#undo').click(function() {
+        replay(undo, redo, '#redo', this);
+    });
+    $('#redo').click(function() {
+        replay(redo, undo, '#undo', this);
+    })
     // color switch
     $(document).ready(function(){
         $("#warna").on('change',function(){
@@ -490,6 +660,8 @@ include "connection.php";
 
     //var flagG = false;
     var zip = new JSZip();
+    var pdf;
+    var formatexport = <?php echo $_COOKIE['sformat'];?>;
 
     //Fungsi untuk melakukan looping utama keseluruh row
     function loopG(){
@@ -498,23 +670,24 @@ include "connection.php";
             generateall(i);
             sendtoDB(i);
             canvas.discardActiveObject().renderAll();
+            if(i === 1 || formatexport != 4){
             <?php 
             $pformat = $_COOKIE['sformat'];
             if($pformat == '"1"'){
                 echo 'var imgData = cvs.toDataURL("image/png", 1.0);';
-                    if($psize == '"1"'){
-                        echo 'var pdf = new jsPDF("l","pt","a3");';
-                    }elseif($psize == '"2"'){
-                        echo 'var pdf = new jsPDF("l","pt","a4");';
-                    }elseif($psize == '"3"'){
-                        echo 'var pdf = new jsPDF("l","pt","a5");';
-                    }elseif($psize == '"4"'){
-                        echo 'var pdf = new jsPDF("l","pt","b4");';
-                    }elseif($psize == '"5"'){
-                        echo 'var pdf = new jsPDF("l","pt","b5");';
-                    }elseif($psize == '"6"'){
-                        echo 'var pdf = new jsPDF("l","pt","letter");';
-                    }
+                if($psize == '"1"'){
+                    echo 'pdf = new jsPDF("l","pt","a3");';
+                }elseif($psize == '"2"'){
+                    echo 'pdf = new jsPDF("l","pt","a4");';
+                }elseif($psize == '"3"'){
+                    echo 'pdf = new jsPDF("l","pt","a5");';
+                }elseif($psize == '"4"'){
+                    echo 'pdf = new jsPDF("l","pt","b4");';
+                }elseif($psize == '"5"'){
+                    echo 'pdf = new jsPDF("l","pt","b5");';
+                }elseif($psize == '"6"'){
+                    echo 'pdf = new jsPDF("l","pt","letter");';
+                }
                 echo 'var width = pdf.internal.pageSize.getWidth();
                     var height = pdf.internal.pageSize.getHeight();
                     pdf.addImage(imgData,"PNG", 0, 0, width, height);
@@ -525,8 +698,33 @@ include "connection.php";
             }elseif($pformat == '"3"'){
                 echo 'var imgData = cvs.toDataURL("image/jpg", 1.0);
                 zip.file(\'Sertifikat\'+i+\'.jpeg\', imgData.split(\'base64,\')[1],{base64: true});';
+            }elseif($pformat == '"4"'){
+                    echo 'var imgData = cvs.toDataURL("image/png", 1.0);';
+                    if($psize == '"1"'){
+                        echo 'pdf = new jsPDF("l","pt","a3");';
+                    }elseif($psize == '"2"' || $psize == 2){
+                        echo 'pdf = new jsPDF("l","pt","a4");';
+                    }elseif($psize == '"3"'){
+                        echo 'pdf = new jsPDF("l","pt","a5");';
+                    }elseif($psize == '"4"'){
+                        echo 'pdf = new jsPDF("l","pt","b4");';
+                    }elseif($psize == '"5"'){
+                        echo 'pdf = new jsPDF("l","pt","b5");';
+                    }elseif($psize == '"6"'){
+                        echo 'pdf = new jsPDF("l","pt","letter");';
+                    }
+                    echo 'var width = pdf.internal.pageSize.getWidth();
+                        var height = pdf.internal.pageSize.getHeight();
+                        pdf.addImage(imgData,"PNG", 0, 0, width, height);';
             }
             ?>
+            }else{
+                var imgData = cvs.toDataURL("image/png", 1.0);
+                var width = pdf.internal.pageSize.getWidth();
+                var height = pdf.internal.pageSize.getHeight();
+                pdf.addPage();
+                pdf.addImage(imgData,"PNG", 0, 0, width, height);
+            }
     
             /*  Increment Progress Bar
             var elem = document.getElementById("myBar");
@@ -590,13 +788,15 @@ include "connection.php";
 
             $("#myModal").one('shown.bs.modal', function(){
                 loopG();
-
-                zip.generateAsync({type:"blob"}).then(function (blob) {
-                    saveAs(blob, "SertifikatBundle.zip");
-                }, function (err) {
-                    jQuery("#blob").text(err);
-                });
-
+                if(formatexport != 4){
+                    zip.generateAsync({type:"blob"}).then(function (blob) {
+                        saveAs(blob, "SertifikatBundle.zip");
+                    }, function (err) {
+                        jQuery("#blob").text(err);
+                    })
+                }else{
+                    pdf.save('SertifikatBundle.pdf');
+                }
                 $('#myModal').modal('hide');
             });
 

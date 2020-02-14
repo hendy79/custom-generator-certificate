@@ -39,4 +39,4 @@ ALTER TABLE `user`
 ALTER TABLE `sertifikat`
   ADD CONSTRAINT `fk_user` FOREIGN KEY (`username_id`) REFERENCES `user` (`username`) ON UPDATE CASCADE;
   
-SELECT * FROM sertifikat;
+/*SELECT * FROM sertifikat;*/
