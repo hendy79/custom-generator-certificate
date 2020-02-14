@@ -13,7 +13,8 @@ include "connection.php";
     <script src="assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/b-1.6.1/b-colvis-1.6.1/r-2.2.3/sc-2.0.1/sp-1.0.1/datatables.min.js"></script>
-    <script type="text/javascript" src="//cdn.rawgit.com/jhyland87/DataTables-Keep-Conditions/118c5e107f1f603b1b91475dc139df6f53917e38/dist/dataTables.keepConditions.min.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/jhyland87/DataTables-Keep-Conditions/118c5e107f1f603b1b91475dc139df6f53917e38/dist/dataTables.keepConditions.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.20/sorting/natural.js"></script>
     <script src="assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 </head>
 <body>
@@ -96,6 +97,9 @@ $(document).ready(function() {
     // DataTable
     var table = $('#serti').DataTable({
         responsive: true,
+        columnDefs: [
+            { type: 'natural', targets: [0,4,5] }
+        ]  
     });
  
     // Apply the search

@@ -31,8 +31,8 @@ require("connection.php");
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12">
+            <div class="row justify-content-center">
+                <div class="col-6">
                     <div class="card card-body">
                         <div class="row">
                             <div class="col-sm-12 col-xs-12">
@@ -72,31 +72,100 @@ require("connection.php");
                             <div class="card card-body justify-content-center">
                                 <div class="row" >
                                     <div class="col-sm-12 col-xs-12 align-items-center">
-                                        <p>ID Sertifikat  = ';echo $row['id']; echo'</p>
-                                        <p>Nama Pemilik   = ';echo $row['nama']; echo'</p>
-                                        <p>Event          = ';echo $row['event']; echo'</p>
-                                        <p>Organizer      = ';echo $row['organizer']; echo'</p>
-                                        <p>Tanggal Keluar = ';echo $row['tgl_keluar']; echo'</p>
-                                        <p>Tanggal Expire = ';echo $row['tgl_exp']; echo'</p>
+                                        <table class="table table-responsive table-borderless">
+                                            <tbody>
+                                                <tr>
+                                                    <td>ID Sertifikat</td>
+                                                    <td>:</td>
+                                                    <td>';echo $row['id']; echo'</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Nama Pemilik</td>
+                                                    <td>:</td>
+                                                    <td>';echo $row['nama']; echo'</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Event</td>
+                                                    <td>:</td>
+                                                    <td>';echo $row['event']; echo'</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Organizer</td>
+                                                    <td>:</td>
+                                                    <td>';echo $row['organizer']; echo'</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Tanggal Keluar</td>
+                                                    <td>:</td>
+                                                    <td>';echo $row['tgl_keluar']; echo'</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Tanggal Expire</td>
+                                                    <td>:</td>
+                                                    <td>';echo $row['tgl_exp']; echo'</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>';      
+            }else{
+                echo '
+                    <div class="row justify-content-center">
+                        <div class="col-3">
+                            <div class="card card-body justify-content-center">
+                                <div class="row" >
+                                    <div class="align-items-center">
+                                        <table class="table table-responsive table-borderless">
+                                            <tbody>
+                                                <tr>
+                                                    <td>ID Sertifikat</td>
+                                                    <td>:</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Nama Pemilik</td>
+                                                    <td>:</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Event</td>
+                                                    <td>:</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Organizer</td>
+                                                    <td>:</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Tanggal Keluar</td>
+                                                    <td>:</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Tanggal Expire</td>
+                                                    <td>:</td>
+                                                    <td>-</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>';   
             }
+            
         ?>
     </div>
     <script>
         var element =  document.getElementById('dataserti');
         //if div is not exists
         if (typeof(element) == 'undefined' || element == null){   
-            <?php 
-                $link=null;
-                if(!empty($_GET['id'])){
-                    $link=$_GET['id']; 
-                }
-            ?>
-            var x= '<?php echo $link;?>';
+            var x= '<?php echo $idsearch;?>';
             if(!(x == "" || x == null)){
                 document.getElementById('find').click();   
             }
