@@ -118,7 +118,7 @@
                                                 </div>
                                                 <div class="form-group row">
                                                     <label for="igexp" class="col-sm-2 col-form-label">Tentukan Masa Berlaku</label>
-                                                    <select name="igexp" id="igexp">
+                                                    <select class="custom-select" style="width: 10%;" name="igexp" id="igexp">
                                                         <option value="0">Permanen</option>
                                                         <option value="1">1 Tahun</option>
                                                         <option value="2">2 Tahun</option>

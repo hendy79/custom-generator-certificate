@@ -17,6 +17,7 @@ include "connection.php";
     <!--Custom JavaScript -->
     <link href="dist/css/pages/progressbar-page.css" rel="stylesheet">
     <link href="dist/css/style.css" rel="stylesheet">
+    <link href="dist/css/style.min.css" rel="stylesheet">
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/fabric/dist/fabric.min.js"></script>
     <script src="node_modules/jszip/dist/jszip.min.js"></script>
@@ -25,125 +26,127 @@ include "connection.php";
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script src="assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- jQuery file upload -->
     <script src="dist/js/qrious.js"></script>
 </head>
 <body>
-<!-- canvas -->
-<?php
-    $psize = $_COOKIE['spsize'];
-    $width  = 842;
-    $height = 595;
-    if($psize == '"1"'){
-        $width  = 1191;
-        $height = 842;
-    }elseif($psize == '"2"'){
-        //default
-    }elseif($psize == '"3"'){
-        $width  = 595;
-        $height = 420;
-    }elseif($psize == '"4"'){
-        $width  = 1001;
-        $height = 709;
-    }elseif($psize == '"5"'){
-        $width  = 709;
-        $height = 599;
-    }elseif($psize == '"6"'){
-        $width  = 792;
-        $height = 612;
-    }
-    echo '<canvas id="bg" width="'.$width.'" height="'.$height.'" style="border:1px solid black;">
-    </canvas>';
-?>
-<!-- end canvas -->
-
-<!--<img src="assets/images/qrdummy.png" height="100" width="100" alt="Qr Code Dummy" id="qrdummy" >-->
-
-<!-- tambah gambar -->
-<input type="file" onchange="previewFile()" id="fileinput">
-<img src="" height="200" alt="Image preview...">
-<!-- end tambah gambar -->
-
-<!-- fit to background -->
-<button id="ftbg" onclick="fitSelectedObject()" >Fit to Background</button>
-<!-- end fit to background -->
-
-
-<!-- delete all -->
-<button id="delall">Delete All</button>
-<!-- end delete all -->
-
-<!-- delete selected layer -->
-<button id="delsel">Delete</button>
-<!-- end delete selected layer -->
-
-<!-- add text -->
-<button id="addtxt">Add Text</button>
-<!-- end add text -->
-
-<!-- send to back -->
-<button onclick="sendSelectedObjectBack()">Send To back</button><!-- semua layer -->
-<!-- end send to back -->
-<!-- bring to front -->
-<button onclick="sendSelectedObjectFront()">Send To Front</button>
-<!-- semua layer -->
-<!-- end send to back -->
-<!-- send to back -->
-<button onclick="sendSelectedObjectBackward()">bring backward</button>
-<!-- satu layer -->
-<!-- end send to back -->
-<!-- send to back -->
-<button onclick="sendSelectedObjectForward()">bring forward</button>
-<!-- end send to back -->
-<!-- change color -->
-<input type="color" id="warna">
-<!-- end change color -->
-<!-- set font-family -->
-<select id="fontFamily" name="fontFamily">
-    <option value="" disabled selected>Font Family</option>
-    <option value="Times New Roman" style="font-family:Times new roman" >Times New Roman</option>
-    <option value="candara" style="font-family:candara">Candara</option>
-    <option value="calibri" style="font-family:calibri">Calibri</option>
-    <option value="sans-serif" style="font-family:sans-serif">Sans-Serif</option>
-    <option value="monospace" style="font-family:monospace">Monospace</option>
-    <option value="cursive" style="font-family:cursive">Cursive</option>
-    <option value="arial" style="font-family:arial">Arial</option>
-    <option value="courier" style="font-family:courier">Courier</option>
-    <option value="tahoma" style="font-family:tahoma">Tahoma</option>
-    <option value="impact" style="font-family:impact">Impact</option>
-    <option value="Brush Script MT" style="font-family:Brush Script MT">Brush Script MT</option>
-</select>
-<!-- end set font-family -->
-
-<!-- set font-size -->
-<input type="number" id="fontSize" name="points" step="1" placeholder="Font Size">
-<!-- end set font-size -->
-
-<!-- Undo Button -->
-<button id="undo" disabled>Undo</button>
-<!-- end Undo Button -->
-<!-- Redo Button -->
-<button id="redo" disabled>Redo</button>
-<!-- end Redo Button -->
-<!-- eyeDropper color -->
-<button id="eyeDropper">Eye Dropper</button>
-<!-- end eyeDropper color -->
-
-<!-- generate canvas -->
-<button id="generate">Generate!</button>
-<!-- Modal -->
-<div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog center-screen">
-            <!-- <div class="progress">
-                <div class="progress-bar" role="progressbar" id="myBar" style="width:0%">
-                <small class="justify-content-center d-flex position-absolute w-100">0%</small>
+<div class="container-fluid">
+    <div class="row page-titles">
+        <div class="col-md-12 align-self-center">
+            <div class="row">
+                <h4>Generator Sertifikat</h4>
+            </div>
+            <div class="row">
+                <div class="d-flex justify-content-end align-items-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="index.php"><p class="text-dark">Home</p></a></li>
+                        <li class="breadcrumb-item active">Canvas</li>
+                    </ol>
                 </div>
-            </div> -->
-            <div class="center-screen">
-                <img src="assets/images/a-loader.gif" alt="">
             </div>
         </div>
     </div>
-</div>  
+    <div class="row">
+        <div class="col-12">
+    <!-- canvas -->
+    <?php
+        $psize = $_COOKIE['spsize'];
+        $pformat = $_COOKIE['sformat'];
+        $width  = 842;
+        $height = 595;
+        if($psize == '"1"'){
+            $width  = 1191;
+            $height = 842;
+        }elseif($psize == '"2"'){
+            //default
+        }elseif($psize == '"3"'){
+            $width  = 595;
+            $height = 420;
+        }elseif($psize == '"4"'){
+            $width  = 1001;
+            $height = 709;
+        }elseif($psize == '"5"'){
+            $width  = 709;
+            $height = 599;
+        }elseif($psize == '"6"'){
+            $width  = 792;
+            $height = 612;
+        }
+        echo '<div class="card card-body justify-content-center" style="height: 60rem;">
+        <div class="row"><div class="col-sm-12 col-xs-12" align="center">
+        <canvas id="bg" align="center" width="'.$width.'" height="'.$height.'" style="border:1px solid black;">
+        </canvas></div></div></div>';
+    ?>
+        </div>
+    </div>
+    <div class="side-mini-panel" id="paleteMain" style="overflow: hidden; opacity: 0.25;">
+        <ul class="mini-nav ps" data-ps-id="8f377b4d-de38-c34f-a446-c3e5d7cfe900" style="overflow: hidden;">
+            <div class="togglediv"><a href="javascript:void(0)" id="togglebtn" class="" style="display: none;"><i class="ti-menu"></i></a></div>
+            <!-- .Dashboard -->
+            <li class="selected cnt-none">
+                <a href="javascript:void(0)"><i class="ti-palette"></i></a>
+                <div class="sidebarmenu">
+                    <!-- Left navbar-header -->
+                    <h3 class="menu-title">Tools for Canvas</h3>
+                    <ul class="sidebar-menu ps ps--theme_default" data-ps-id="8c4e3556-5fc0-562a-c732-0b6ba5b6b21a">
+                        <div class="col ml-3">
+                        <div class="row mt-1 mr-3 mb-4">
+                        <h6>Images Upload</h6>
+                        <input type="file" onchange="previewFile()" id="fileinput">
+                        </div>
+                        <div class="row mt-1 mr-3 mb-4"><button id="ftbg" class="btn waves-effect waves-light btn-info" onclick="fitSelectedObject()" style="width: 100%;">Fit to Background</button></div>
+                        <div class="row mt-1 mr-3 mb-4"><button id="addtxt" class="btn waves-effect waves-light btn-dark" style="width: 100%;">Add Text</button></div>
+                        <div class="row mt-1 mr-3"><button id="delall" style="width: 100%;" class="btn waves-effect waves-light btn-rounded btn-outline-primary">Delete All</button></div>
+                        <div class="row mt-1 mr-3 mb-4"><button id="delsel" style="width: 100%;" class="btn waves-effect waves-light btn-rounded btn-outline-primary">Delete</button></div>
+                        <div class="row mt-1 mr-3 mb-4"><input type="color" class="form-control" id="warna" style="width: 100%;"></div>
+                        <div class="row mt-1 mr-3 mb-4">
+                        <select class="custom-select" id="fontFamily" style="width: 100%;" name="fontFamily">
+                            <option value="" disabled selected>Font Family</option>
+                            <option value="Times New Roman" style="font-family:Times new roman" >Times New Roman</option>
+                            <option value="candara" style="font-family:candara">Candara</option>
+                            <option value="calibri" style="font-family:calibri">Calibri</option>
+                            <option value="sans-serif" style="font-family:sans-serif">Sans-Serif</option>
+                            <option value="monospace" style="font-family:monospace">Monospace</option>
+                            <option value="cursive" style="font-family:cursive">Cursive</option>
+                            <option value="arial" style="font-family:arial">Arial</option>
+                            <option value="courier" style="font-family:courier">Courier</option>
+                            <option value="tahoma" style="font-family:tahoma">Tahoma</option>
+                            <option value="impact" style="font-family:impact">Impact</option>
+                            <option value="Brush Script MT" style="font-family:Brush Script MT">Brush Script MT</option>
+                        </select>
+                        </div>
+                        <div class="row mt-1 mr-3 mb-4"><input class="form-control" type="number" id="fontSize" name="points" step="1" style="width: 100%;" placeholder="Font Size"></div>
+                        <div class="row mt-1 mr-3 mb-4"><button id="eyeDropper" class="btn waves-effect waves-light btn-outline-info" style="width: 100%;">Eye Dropper</button></div>
+                        <div class="row mt-1 mr-3"><button id="undo" class="btn waves-effect waves-light btn-outline-danger" style="width: 100%;" disabled>Undo</button></div>
+                        <div class="row mt-1 mr-3 mb-4"><button id="redo" class="btn waves-effect waves-light btn-outline-danger" style="width: 100%;" disabled>Redo</button></div>
+                        <div class="row mt-1 mr-3"><button class="btn waves-effect waves-light btn-outline-warning" style="width: 100%;" onclick="sendSelectedObjectBack()">Send To Back</button></div>
+                        <div class="row mt-1 mr-3"><button class="btn waves-effect waves-light btn-outline-warning" style="width: 100%;" onclick="sendSelectedObjectFront()">Send To Front</button></div>
+                        <div class="row mt-1 mr-3"><button class="btn waves-effect waves-light btn-outline-warning" style="width: 100%;" onclick="sendSelectedObjectBackward()">Bring Backward</button></div>
+                        <div class="row mt-1 mr-3 mb-4"><button class="btn waves-effect waves-light btn-outline-warning" style="width: 100%;" onclick="sendSelectedObjectForward()">Bring Forward</button></div>
+                        <div class="row mt-1 mr-3"><button id="generate" class="btn waves-effect waves-light btn-success" style="width: 100%;">Generate!</button></div>
+                        </div>
+                        </ul>
+                    <!-- Left navbar-header end -->
+                </div>
+            </li>
+            <!-- .Multi level -->
+        <div class="ps__scrollbar-x-rail" style="left: 0px; bottom: 0px;"><div class="ps__scrollbar-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__scrollbar-y-rail" style="top: 0px; height: 576px; right: 0px;"><div class="ps__scrollbar-y" tabindex="0" style="top: 0px; height: 376px;"></div></div></ul>
+    </div>
+
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog center-screen">
+                <!-- <div class="progress">
+                    <div class="progress-bar" role="progressbar" id="myBar" style="width:0%">
+                    <small class="justify-content-center d-flex position-absolute w-100">0%</small>
+                    </div>
+                </div> -->
+                <div class="center-screen">
+                    <img src="assets/images/a-loader.gif" id="ModalImg" alt="">
+                </div>
+            </div>
+        </div>
+    </div> 
+</div> 
 
     <script>
     var values = <?php echo $_COOKIE['values']; ?>;
@@ -158,6 +161,23 @@ include "connection.php";
     var redo = [];
 
     var globalColor = "";
+
+    var paleteClick = true;
+
+    $('#paleteMain').on('click', function() {
+        var el = document.getElementById("paleteMain");
+        if(paleteClick){
+            el.style.opacity = 1;
+        }else{
+            paleteClick = true;
+        }
+    });
+
+    $('#togglebtn').on('click', function() {
+        var el = document.getElementById("paleteMain");
+        el.style.opacity = 0.25;
+        paleteClick = false;
+    });
 
     //modul generator sertifikat
     if(useqr){
@@ -780,11 +800,15 @@ include "connection.php";
             generateAllQr();
             preloadQr();
             
+            $("#ModalImg").attr("src","assets/images/a-loader.gif");
+            
             $("#myModal").modal({
                 backdrop: "static", //remove ability to close modal with click
                 keyboard: false, //remove option to close with keyboard
                 show: true //Display loader!
             });
+
+            
 
             $("#myModal").one('shown.bs.modal', function(){
                 loopG();
@@ -820,6 +844,23 @@ include "connection.php";
     canvas.renderAll();
 
     </script>
-
+    <!-- ============================================================== -->
+    <!-- All Jquery -->
+    <!-- ============================================================== -->
+    <script src="../assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="../assets/node_modules/popper/popper.min.js"></script>
+    <script src="../assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="dist/js/perfect-scrollbar.jquery.min.js"></script>
+    <!--Wave Effects -->
+    <script src="dist/js/waves.js"></script>
+    <!--Menu sidebar -->
+    <script src="dist/js/sidebarmenu.js"></script>
+    <!--stickey kit -->
+    <script src="../assets/node_modules/sticky-kit-master/dist/sticky-kit.min.js"></script>
+    <script src="../assets/node_modules/sparkline/jquery.sparkline.min.js"></script>
+    <!--Custom JavaScript -->
+    <script src="dist/js/custom.min.js"></script>
 </body>
 </html>

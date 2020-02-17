@@ -71,7 +71,7 @@
         fclose($fileName);
     }
     function set_cookie($cookiename, $v){
-        setcookie($cookiename, json_encode($v), time() + (3600));
+        setcookie($cookiename, json_encode($v), time() + (86400));
     }
     function print_end(){
         echo '
