@@ -129,6 +129,11 @@ require("connection.php");
                                         <table class="table table-responsive table-borderless">
                                             <tbody>
                                                 <tr>
+                                                    <td>Nomor Serial</td>
+                                                    <td>:</td>
+                                                    <td>-</td>
+                                                </tr>
+                                                <tr>
                                                     <td>ID Sertifikat</td>
                                                     <td>:</td>
                                                     <td>-</td>

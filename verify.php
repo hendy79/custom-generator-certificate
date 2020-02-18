@@ -47,24 +47,26 @@ include "connection.php";
                     ?>
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>Serial Number</th>
                             <th>Nama Pemilik</th>
                             <th>Event</th>
                             <th>Organizer</th>
                             <th>Tanggal Cetak</th>
                             <th>Akhir Masa Berlaku</th>
+                            <th>ID</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                             foreach($srt as $row):?>
                             <tr>
-                                <td><?php echo $row['id'];?></td>
+                                <td><?php echo $row['serial'];?></td>
                                 <td><?php echo $row['nama'];?></td>
                                 <td><?php echo $row['event'];?></td>
                                 <td><?php echo $row['organizer'];?></td>
                                 <td><?php echo $row['tgl_keluar'];?></td>
                                 <td><?php echo $row['tgl_exp'];?></td>
+                                <td><?php echo $row['id'];?></td>
                             </tr>
                         <?php endforeach;?>     
                     </tbody>
@@ -77,6 +79,7 @@ include "connection.php";
                                 }
                             ?>
                             <th><input type="text" name="idsearch" id="idsearch" value="<?php echo $idsearch; ?>"/></th>
+                            <th></th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -97,8 +100,9 @@ $(document).ready(function() {
     // DataTable
     var table = $('#serti').DataTable({
         responsive: true,
+        "order": [[ 6, "asc" ]],
         columnDefs: [
-            { type: 'natural', targets: [0,4,5] }
+            { type: 'natural', targets: [4,5,6] }
         ]  
     });
  
