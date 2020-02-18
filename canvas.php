@@ -26,7 +26,7 @@ include "connection.php";
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script src="assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- jQuery file upload -->
+    <script src="https://unpkg.com/pure-md5@latest/lib/index.js"></script>
     <script src="dist/js/qrious.js"></script>
 </head>
 <body>
@@ -162,6 +162,8 @@ include "connection.php";
 
     var globalColor = "";
 
+    var id_serti, hashed_id_serti;
+
     var paleteClick = true;
 
     $('#paleteMain').on('click', function() {
@@ -293,9 +295,9 @@ include "connection.php";
         canvas.add(text[i]);
     }
     
-    //add dummy for id sertifikat
+    //add dummy for nomor serial
     if(useidserti){
-        text[values[0].length] = new fabric.IText("Id Sertifikat",{
+        text[values[0].length] = new fabric.IText("Serial Sertifikat (32 Digit)",{
             id: values[0].length,
             originX: 'center', //added
             originY: 'center', //added
@@ -615,9 +617,11 @@ include "connection.php";
     
     //Fungsi untuk menggenerate semua qr dan menyimpan di url
     function generateAllQr(){
+        id_serti = username + '_' + (id+i-1);
+        hashed_id_serti = chunk(md5(id_serti).toString().toUpperCase(), 4).join("-");
         for(i=1;i<values.length;i++){
             var qr = new QRious({
-                value: 'http://localhost/search.php?id='+username+'_'+(id+i-1)
+                value: 'http://localhost/search.php?id='+hashed_id_serti
             });
             qrimg[i] = qr.toDataURL('image/png',1.0);
         }
@@ -653,9 +657,23 @@ include "connection.php";
 
     var objectElement = null;
 
+    function chunk(str, n) {
+        var ret = [];
+        var i;
+        var len;
+
+        for(i = 0, len = str.length; i < len; i += n) {
+            ret.push(str.substr(i, n));
+        }
+
+        return ret;
+    };
+
     //Fungsi untuk menggenerate teks serta qr
     function generateall(i){
-        var id_serti = username + '_' + (id+i-1);
+        id_serti = username + '_' + (id+i-1);
+        hashed_id_serti = chunk(md5(id_serti).toString().toUpperCase(), 4).join("-");
+        console.log(hashed_id_serti);
         var objects = canvas.getObjects();
         objects.forEach(function(o) {
             for(j=0;j<values[0].length;j++){
@@ -664,7 +682,7 @@ include "connection.php";
                 }
             }
             if(o.id === values[0].length && useidserti){
-                o.set('text', id_serti);
+                o.set('text', hashed_id_serti);
             }
             if(o.id === 'imgQr' && useqr){
                 if(i === 1){
@@ -764,7 +782,7 @@ include "connection.php";
                 }
             }
             if(o.id === values[0].length && useidserti){
-                o.set('text', 'Id Sertifikat');
+                o.set('text', 'Serial Sertifikat (32 Digit)');
             }
             if(o.id === 'imgQr' && useqr){
                 canvas.remove(o);
@@ -830,8 +848,7 @@ include "connection.php";
     });
 
     function sendtoDB(i){
-        var id_ser = username + '_' + (id+i-1);
-        var dataString = 'id_ser='+id_ser+'&nama='+values[i][indexnamapeserta]+'&username='+username;
+        var dataString = 'id_ser='+id_serti+'&nama='+values[i][indexnamapeserta]+'&username='+username+'&serial='+hashed_id_serti;
         $.ajax
         ({
             url: "sendtoDB.php",

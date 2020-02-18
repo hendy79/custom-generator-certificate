@@ -113,7 +113,7 @@
                                                     <input id="igqr" name="igqr" type="checkbox" data-toggle="toggle" checked>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label for="igserti" class="col-sm-2 col-form-label">Gunakan Id Sertifikat</label>
+                                                    <label for="igserti" class="col-sm-2 col-form-label">Gunakan Serial Sertifikat</label>
                                                     <input id="igserti" name="igserti" type="checkbox" data-toggle="toggle" checked>
                                                 </div>
                                                 <div class="form-group row">
