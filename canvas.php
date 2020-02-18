@@ -1,6 +1,6 @@
 <?php
-session_start();
-include "connection.php";
+    session_start();
+    include "connection.php";
 ?>
 
 <!DOCTYPE html>
@@ -673,7 +673,6 @@ include "connection.php";
     function generateall(i){
         id_serti = username + '_' + (id+i-1);
         hashed_id_serti = chunk(md5(id_serti).toString().toUpperCase(), 4).join("-");
-        console.log(hashed_id_serti);
         var objects = canvas.getObjects();
         objects.forEach(function(o) {
             for(j=0;j<values[0].length;j++){

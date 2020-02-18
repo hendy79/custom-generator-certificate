@@ -13,7 +13,7 @@
    $cc = mysqli_escape_string($con, $c);
    $dd = mysqli_escape_string($con, $d);
 
-   if($yearadded === 0){
+   if($yearadded == '"0"'){
       $query = mysqli_query($con, "INSERT INTO `sertifikat` (`id`, `nama`, `tgl_keluar`, `tgl_exp`, `username_id`, `event`, `organizer`, `serial`)
                                  VALUES ('$aa', '$bb', CURRENT_DATE(), NULL, '$cc', '$event', '$organizer','$dd')");
    }else{
