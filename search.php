@@ -12,6 +12,8 @@ require("connection.php");
     <script src="assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
     <script src="assets/node_modules/popper/popper.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="node_modules/inputmask/dist/jquery.inputmask.js"></script>
+    <script src="node_modules/inputmask/dist/bindings/inputmask.binding.js"></script>
     <script src="assets/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 </head>
     <body>
@@ -39,14 +41,15 @@ require("connection.php");
                                 <!-- Content here -->
                                 <form action="search.php" method="post" id="searchme" name="searchme">
                                     <div class="text-center">
-                                        <h1>Search ID</h1><br>   
+                                        <h1>Search Serial Number</h1><br>   
                                         <?php 
                                         $idsearch=null;
                                         if(!empty($_GET['id'])){
                                             $idsearch=$_GET['id']; 
                                         }
                                         ?> 
-                                        <input type="text" name="findme" id="findme" size="75" value="<?php echo $idsearch; ?>">
+                                        <input type="text" name="findme" id="findme" size="40" value="<?php echo $idsearch; ?>" 
+                                        data-inputmask-regex="[\w]{4}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{4}-[\w]{4}">
                                     </div>
                                     <div class="text-center">
                                     <br>
@@ -61,19 +64,24 @@ require("connection.php");
         <?php
             if(isset($_POST['find'])){
                 $search_val=$_POST['findme'];
-                $sql= "SELECT * FROM `sertifikat` WHERE `id`='$search_val'";
+                $sql= "SELECT * FROM `sertifikat` WHERE `serial`='$search_val'";
                 $srt = $con->query($sql);  
                 $row = mysqli_fetch_assoc($srt);
             }
             if(!empty($row)){
                 echo '
                     <div class="row justify-content-center" id="dataserti">
-                        <div class="col-3">
+                        <div class="col-6">
                             <div class="card card-body justify-content-center">
                                 <div class="row" >
                                     <div class="col-sm-12 col-xs-12 align-items-center">
                                         <table class="table table-responsive table-borderless">
                                             <tbody>
+                                                <tr>
+                                                    <td>Nomor Serial</td>
+                                                    <td>:</td>
+                                                    <td>';echo $row['serial']; echo'</td>
+                                                </tr>
                                                 <tr>
                                                     <td>ID Sertifikat</td>
                                                     <td>:</td>
@@ -114,7 +122,7 @@ require("connection.php");
             }else{
                 echo '
                     <div class="row justify-content-center">
-                        <div class="col-3">
+                        <div class="col-6">
                             <div class="card card-body justify-content-center">
                                 <div class="row" >
                                     <div class="align-items-center">
