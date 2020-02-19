@@ -7,7 +7,7 @@ Custom Certificate Generator - An project to generate certificate and verificate
 First thing first, clone this git repository by download it or using git bash:
 
 ```
-git clone https://github.com/hendy79/generate-certificate
+git clone https://github.com/hendy79/custom-generator-certificate
 ```
 
 ### Prerequisites
@@ -41,9 +41,9 @@ There are some demo from this web-based custom certificate generator
 
 ## Developers
 
-* **Hendy**
-* **M. Khoiri Muzakki**
-* **Alland Chandra K.**
+* **Hendy** - Fullstack Developer
+* **M. Khoiri Muzakki** - Backend Developer
+* **Alland Chandra K.** - Fullstack Developer
 
 ## How to Contribute?
 
