@@ -1,5 +1,28 @@
 <?php
-require("connection.php");
+    require("connection.php");
+    /*
+    MIT License
+
+    Copyright (c) 2020 Hendy (M. Khoiri Muzaki, Alland C. Kesuma)
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+    */
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,7 +30,7 @@ require("connection.php");
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Generator Sertifikat</title>
+    <title>Certificate Generator</title>
     <link href="dist/css/style.min.css" rel="stylesheet">
     <script src="assets/node_modules/jquery/jquery-3.2.1.min.js"></script>
     <script src="assets/node_modules/popper/popper.min.js"></script>
@@ -21,7 +44,7 @@ require("connection.php");
             <div class="row page-titles">
                 <div class="col-md-12 align-self-center">
                     <div class="row">
-                        <h4>Generator Sertifikat</h4>
+                        <h4 style="color: white;"><b>Certificate Generator</b></h4>
                     </div>
                     <div class="row">
                         <div class="d-flex justify-content-end align-items-center">
@@ -41,7 +64,7 @@ require("connection.php");
                                 <!-- Content here -->
                                 <form action="search.php" method="post" id="searchme" name="searchme">
                                     <div class="text-center">
-                                        <h1>Search Serial Number</h1><br>   
+                                        <h1>Search Serial Code</h1><br>   
                                         <?php 
                                         $idsearch=null;
                                         if(!empty($_GET['id'])){
@@ -78,17 +101,17 @@ require("connection.php");
                                         <table class="table table-responsive table-borderless">
                                             <tbody>
                                                 <tr>
-                                                    <td>Nomor Serial</td>
+                                                    <td>Serial Code</td>
                                                     <td>:</td>
                                                     <td>';echo $row['serial']; echo'</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>ID Sertifikat</td>
+                                                    <td>ID</td>
                                                     <td>:</td>
                                                     <td>';echo $row['id']; echo'</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Nama Pemilik</td>
+                                                    <td>Participant Name</td>
                                                     <td>:</td>
                                                     <td>';echo $row['nama']; echo'</td>
                                                 </tr>
@@ -103,12 +126,12 @@ require("connection.php");
                                                     <td>';echo $row['organizer']; echo'</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Tanggal Keluar</td>
+                                                    <td>Printed Date</td>
                                                     <td>:</td>
                                                     <td>';echo $row['tgl_keluar']; echo'</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Tanggal Expire</td>
+                                                    <td>Expiry Date</td>
                                                     <td>:</td>
                                                     <td>';echo $row['tgl_exp']; echo'</td>
                                                 </tr>
@@ -129,17 +152,17 @@ require("connection.php");
                                         <table class="table table-responsive table-borderless">
                                             <tbody>
                                                 <tr>
-                                                    <td>Nomor Serial</td>
+                                                    <td>Serial Code</td>
                                                     <td>:</td>
                                                     <td>-</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>ID Sertifikat</td>
+                                                    <td>ID</td>
                                                     <td>:</td>
                                                     <td>-</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Nama Pemilik</td>
+                                                    <td>Participant Name</td>
                                                     <td>:</td>
                                                     <td>-</td>
                                                 </tr>
@@ -154,12 +177,12 @@ require("connection.php");
                                                     <td>-</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Tanggal Keluar</td>
+                                                    <td>Printed Date</td>
                                                     <td>:</td>
                                                     <td>-</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Tanggal Expire</td>
+                                                    <td>Expiry Date</td>
                                                     <td>:</td>
                                                     <td>-</td>
                                                 </tr>

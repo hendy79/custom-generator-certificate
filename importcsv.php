@@ -1,4 +1,28 @@
 <!DOCTYPE html>
+<!--
+    MIT License
+
+    Copyright (c) 2020 Hendy (M. Khoiri Muzaki, Alland C. Kesuma)
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+-->
+
 <html lang="en">
  
 <head>
@@ -11,7 +35,7 @@
     <link rel="stylesheet" href="assets/node_modules/dropify/dist/css/dropify.min.css">
     <!-- Favicon icon -->
     <!--<link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon.png">-->
-    <title>Generator Sertifikat</title>
+    <title>Certificate Generator</title>
     <!-- Custom CSS -->
     <link href="dist/css/style.min.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -27,13 +51,13 @@
     <div class="row page-titles">
         <div class="col-md-12 align-self-center">
             <div class="row">
-                <h4>Generator Sertifikat</h4>
+                <h4 style="color: white;"><b>Certificate Generator</b></h4>
             </div>
             <div class="row">
                 <div class="d-flex justify-content-end align-items-center">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.php"><p class="text-dark">Home</p></a></li>
-                        <li class="breadcrumb-item active">Impor CSV</li>
+                        <li class="breadcrumb-item active">Import CSV</li>
                     </ol>
                 </div>
             </div>
@@ -42,14 +66,17 @@
     <div class="row">
         <div class="col-12">
             <div class="card card-body">
-                <h4 class="card-title">Upload CSV yang Digunakan</h4>
+                <h4 class="card-title">Upload CSV</h4>
                 <div class="row">
                         <form class="col-lg-12" action="action.php" method="post" enctype="multipart/form-data">
                             <div class="col-lg-12">
-                                    <input type="file" required name="file" id="file" class="dropify" data-show-remove="true"/>
+                                <input type="file" required name="file" id="file" class="dropify" data-show-remove="true"/>
                             </div>
                             <div class="col-lg-12 mt-3">
-                                    <button type="submit" id="submit" name="Import" class="btn btn-success mr-2" data-loading-text="Loading...">Import</button>
+                                <button type="submit" id="submit" name="Import" class="btn btn-success mr-2" data-loading-text="Loading...">Import</button>
+                            </div>
+                            <div class="text-muted mt-3">
+                                The collumn for participant's name must be declared as "name"
                             </div>
                         </form>
                     </div>

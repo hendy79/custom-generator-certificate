@@ -1,4 +1,27 @@
 <?php
+    /*
+    MIT License
+
+    Copyright (c) 2020 Hendy (M. Khoiri Muzaki, Alland C. Kesuma)
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+    */
     if(isset($_POST['getc'])){  
         print_begin(); 
         include 'CsvReader.php';
@@ -103,13 +126,13 @@
         <div class="row page-titles">
             <div class="col-md-12 align-self-center">
                 <div class="row">
-                    <h4>Generator Sertifikat</h4>
+                    <h4 style="color: white;"><b>Certificate Generator</b></h4>
                 </div>
                 <div class="row">
                     <div class="d-flex justify-content-end align-items-center">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="index.php"><p class="text-dark">Home</p></a></li>
-                            <li class="breadcrumb-item active">Pilih Data</li>
+                            <li class="breadcrumb-item active">Choose Data</li>
                         </ol>
                     </div>
                 </div>
@@ -118,7 +141,7 @@
         <div class="row">
         <div class="col-12">
         <div class="card card-body">
-        <h4 class="card-title">Pilih data CSV yang Digunakan untuk Buat Sertifikat</h4>
+        <h4 class="card-title">Choose CSV to Create Certificate</h4>
         <div class="row">
         <div class="col-sm-12 col-xs-12">';
     }

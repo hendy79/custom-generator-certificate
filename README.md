@@ -27,11 +27,36 @@ A step by step series of examples that tell you how to get a development env run
 * Run file 'serti.sql' to create database
 * Done, you can run it on your browser by type 'localhost' in url collumn
 
+## Demo
+
+There are some demo from this web-based custom certificate generator
+
+### Create new Certificate
+
+![](https://i.imgur.com/Zos3nbA.gif)
+
+### Verify and Check Certificate
+
+![](https://i.imgur.com/H5qPgzW.gif)
+
 ## Developers
 
 * **Hendy**
 * **M. Khoiri Muzakki**
 * **Alland Chandra K.**
+
+## How to Contribute?
+
+* Create an issue first to discuss about the changes you are suggesting.
+* Fork the project.
+* Create a branch with name GC-[#Issue No.] Ex : GC-79
+* Make required changes and commit to that branch.
+* Generate pull request. Mention all the required description regarding changes you made.
+
+## Donate
+
+If you found this project helpful or you learned something from the source code and want to thank us, you can donate via:
+[PayPal](https://www.paypal.me/hendy79)
 
 ## License
 

@@ -1,7 +1,30 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 0); // SET IT TO 0 ON A LIVE SERVER !!!
-include 'action.php';
+    /*
+    MIT License
+
+    Copyright (c) 2020 Hendy (M. Khoiri Muzaki, Alland C. Kesuma)
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+    */
+    error_reporting(E_ALL);
+    ini_set('display_errors', 0); // SET IT TO 0 ON A LIVE SERVER !!!
+    include 'action.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,7 +37,7 @@ include 'action.php';
     <meta name="author" content="">
     <!-- Favicon icon -->
     <!--<link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon.png">-->
-    <title>Generator Sertifikat</title>
+    <title>Certificate Generator</title>
     <!-- Custom CSS -->
     <link href="dist/css/style.min.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -61,7 +84,7 @@ fclose($fp);
     <div class="row page-titles">
         <div class="col-md-12 align-self-center">
             <div class="row">
-                <h4>Generator Sertifikat</h4>
+                <h4 style="color: white;"><b>Certificate Generator</b></h4>
             </div>
             <div class="row">
                 <div class="d-flex justify-content-end align-items-center">
@@ -76,7 +99,7 @@ fclose($fp);
     <div class="row">
         <div class="col-12">
             <div class="card card-body">
-                <h4 class="card-title">Masukan data baru untuk Buat Sertifikat</h4>
+                <h4 class="card-title">Insert New Data to Create Certificate</h4>
                 <div class="row">
                     <div class="col-sm-12 col-xs-12">
                         <?php
@@ -117,14 +140,14 @@ fclose($fp);
                             <div class="col-sm-12 col-xs-12 mt-2">
                                 <div class="text-right">
                                     <a data-target="#newModal" alt="default" data-toggle="modal" class="btn waves-effect waves-light btn-secondary mr-2" id="MainNavHelp" href="#newModal">
-                                    <i class="fa fa-file"></i>   Buat Baru</a>
-                                    <a href="#" id="addrow" class="btn waves-effect waves-light btn-secondary"><i class="fa fa-plus"></i>   Tambah Data</a>
+                                    <i class="fa fa-file"></i>   Create New</a>
+                                    <a href="#" id="addrow" class="btn waves-effect waves-light btn-secondary"><i class="fa fa-plus"></i>   Add Data</a>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-xs-12">
                                 <div>
                                     <!-- <a href="#" name="getc" id="getc" class="btn btn-primary"><i class="fa fa-save"></i>   Simpan</a>-->
-                                    <button id="csave" name="csave" class="btn btn-primary">Simpan</button>    
+                                    <button id="csave" name="csave" class="btn btn-primary">Save</button>    
                                     <button id="getc" name="getc" class="btn waves-effect waves-light btn-success ml-2">Generate</button>                                  
                                 </div>
                             </div>
@@ -142,21 +165,24 @@ fclose($fp);
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Tambah Kolom</h4>
+                    <h4 class="modal-title">Insert Collumn</h4>
                 </div>
                 <div class="modal-body">
                     <form name="subb" method="post" enctype="multipart/form-data" action="">
                         <div class="form-group">
                             <div>
-                                <label>Kolom :</label>
+                                <label>Collumn :</label>
                             </div>
                             <div class="mob-box mb-3">
                                 <input type="text" class="form-control form-ctr" id="head" name="head[]" placeholder="Masukan Nama Kolom">
                             </div>
                         </div>  
                         <div class="form-group">
-                            <a href="javascript:void(0);" class="btn btn-success cust-btn add-field">Tambah</a>
-                            <button type="submit" onclick="simpan()" id="simpan" name="simpan" class="btn btn-primary ml-2" value="simpan">Simpan</button>
+                            <a href="javascript:void(0);" class="btn btn-success cust-btn add-field">Add</a>
+                            <button type="submit" onclick="simpan()" id="simpan" name="simpan" class="btn btn-primary ml-2" value="simpan">Save</button>
+                        </div>
+                        <div class="text-muted mt-3">
+                            The collumn for participant's name must be declared as "name"
                         </div>
                     </form>
                 </div>
@@ -265,8 +291,8 @@ fclose($fp);
         //Add header field
         $(document).on("click", ".add-field", function () {
             var field = '<div class="mob-box">' +
-                '<input type="text" class="form-control form-ctr" id="head" name="head[]" placeholder="Masukan Nama Kolom">' +
-                '<a href="javascript:void(0);" class="remove-field cust-btn">Hapus</a>' +
+                '<input type="text" class="form-control form-ctr" id="head" name="head[]" placeholder="Insert Collumn Name">' +
+                '<a href="javascript:void(0);" class="remove-field cust-btn">Delete</a>' +
                 '<div class="clearfix"></div>' +
                 '</div>';
             $(field).insertAfter('.mob-box:last');
